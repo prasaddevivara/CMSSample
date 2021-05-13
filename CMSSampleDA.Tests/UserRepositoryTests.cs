@@ -23,6 +23,7 @@ namespace CMSSampleDA.Tests
             Assert.IsNotNull(lstUsers);
         }
 
+        [TestMethod]
         public void Test_GetUserByID()
         {
             CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
