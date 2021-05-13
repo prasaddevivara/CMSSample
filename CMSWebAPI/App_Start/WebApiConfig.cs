@@ -22,10 +22,6 @@ namespace CMSWebAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            //var container = new UnityContainer();
-            //container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
-            //config.DependencyResolver = new UnityResolver(container);
         }
     }
 }

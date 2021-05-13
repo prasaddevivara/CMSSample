@@ -36,5 +36,61 @@ namespace CMSSampleDA.Tests
 
             Assert.IsNotNull(user);
         }
+
+        [TestMethod]
+        public void Test_InsertUser()
+        {
+            CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
+            IUserRepository userrepository = new UserRepository(cmssampledacontext);
+
+            User user = new User()
+            {
+                UserName="VRamana",
+                Password="mypassword",
+                FirstName="Ramana",
+                LastName="Vedantham",
+                Email="vramana@gmail.com",
+                Mobile=1234
+            }; 
+            userrepository.InsertUser(user);           
+        }
+
+        [TestMethod]
+        public void Test_DeleteUser()
+        {
+            CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
+            IUserRepository userrepository = new UserRepository(cmssampledacontext);
+
+            User user = new User()
+            {
+                UserId=4,
+                UserName = "VRamana",
+                Password = "mypassword",
+                FirstName = "Ramana",
+                LastName = "Vedantham",
+                Email = "vramana@gmail.com",
+                Mobile = 1234
+            };
+            userrepository.DeleteUser(user);
+        }
+
+        [TestMethod]
+        public void Test_UpdateUser()
+        {
+            CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
+            IUserRepository userrepository = new UserRepository(cmssampledacontext);
+
+            User user = new User()
+            {
+                UserId=1,
+                UserName = "DVedanth1",
+                Password = "Test123$",
+                FirstName = "Devi",
+                LastName = "Prasad",
+                Email = "DVedanth1@gmail.com",
+                Mobile = 4321
+            };
+            userrepository.UpdateUser(user);
+        }
     }
 }

@@ -55,16 +55,20 @@ namespace CMSSample.DA.Repository
         public void InsertUser(User user)
         {
             _context.Users.Add(user);
+            Save();
         }
 
-        public void DeleteUser(User userID)
+        public void DeleteUser(User user)
         {
-            _context.Users.Remove(userID);
+            _context.Entry(user).State = EntityState.Deleted;
+           // _context.Users.Remove(user);
+            Save();
         }
 
         public void UpdateUser(User user)
         {            
             _context.Entry(user).State = EntityState.Modified;
+            Save();
         }
     }
 
