@@ -1,0 +1,19 @@
+﻿using CMSSample.DomainModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CMSSample.DA.Repository
+{
+    public interface IUserRepository : IDisposable
+    {
+        IEnumerable<User> GetUsers();
+        User GetUserByID(int UserId);
+        void InsertUser(User user);
+        void DeleteUser(User userID);
+        void UpdateUser(User user);
+        void Save();
+    }
+}
