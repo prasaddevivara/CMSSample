@@ -19,6 +19,8 @@ namespace CMSWebAPI.Controllers
             _repository = repository;
         }
 
+        [HttpGet]
+        [CustomAuthenticationFilter]
         public IEnumerable<User> GetUsers()
         {
             return _repository.GetUsers();
