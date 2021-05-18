@@ -12,7 +12,7 @@ namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
-        private static string WebAPIURL = "https://localhost:44353/";
+        private static string WebAPIURL = "https://localhost:44353/api";
         public async Task<ActionResult> Index()
         {
             var tokenBased = string.Empty;

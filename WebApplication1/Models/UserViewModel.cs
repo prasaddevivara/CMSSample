@@ -29,6 +29,6 @@ namespace WebApplication1.Models
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress, ErrorMessage = "Email is not valid")]
         public string Email { get; set; }       
-        public int Mobile { get; set; }
+        public string Mobile { get; set; }
     }
 }

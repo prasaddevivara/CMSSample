@@ -20,10 +20,17 @@ namespace CMSWebAPI.Controllers
         }
 
         [HttpGet]
-        [CustomAuthenticationFilter]
+        //[CustomAuthenticationFilter]
         public IEnumerable<User> GetUsers()
         {
             return _repository.GetUsers();
+        }
+
+        [HttpGet]
+        //[CustomAuthenticationFilter]
+        public IEnumerable<User> AuthenticateUser(string UserName)
+        {
+            return _repository.AuthenticateUser(UserName);
         }
 
         [HttpPost]

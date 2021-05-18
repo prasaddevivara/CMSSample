@@ -17,8 +17,8 @@ namespace CMSSampleDA.Tests
         {
             List<User> usrs = new List<User>() 
             { 
-                new User{UserId=1, UserName="DVedanth1", Password="Test123$", FirstName="Devi", LastName="Prasad", Email="DVedanth1@gmail.com", Mobile=67890 },
-                new User{UserId=2, UserName="GRam", Password="mock123$", FirstName="Ram", LastName="Grand", Email="GRam@gmail.com", Mobile=67890 }
+                new User{UserId=1, UserName="DVedanth1", Password="Test123$", FirstName="Devi", LastName="Prasad", Email="DVedanth1@gmail.com", Mobile="1234567890" },
+                new User{UserId=2, UserName="GRam", Password="mock123$", FirstName="Ram", LastName="Grand", Email="GRam@gmail.com", Mobile="1234567890" }
             };
             var mock = new Mock<IUserRepository>();
             mock.Setup(slf => slf.GetUsers()).Returns(usrs);
@@ -31,7 +31,7 @@ namespace CMSSampleDA.Tests
         {           
             var mock = new Mock<IUserRepository>();
             User usr = new User()
-            { UserId = 1, UserName = "DVedanth1", Password = "Test123$", FirstName = "Devi", LastName = "Prasad", Email = "DVedanth1@gmail.com", Mobile = 67890 };
+            { UserId = 1, UserName = "DVedanth1", Password = "Test123$", FirstName = "Devi", LastName = "Prasad", Email = "DVedanth1@gmail.com", Mobile = "1234567890" };
             
             int userID = 1;
             mock.Setup(slf => slf.GetUserByID(userID)).Returns(usr);
@@ -50,7 +50,7 @@ namespace CMSSampleDA.Tests
                 FirstName = "Ramana",
                 LastName = "Vedantham",
                 Email = "vramana@gmail.com",
-                Mobile = 1234
+                Mobile = "1234567890"
             };
             mock.Setup(slf => slf.InsertUser(user));            
         }
@@ -67,7 +67,7 @@ namespace CMSSampleDA.Tests
                 FirstName = "Ramana",
                 LastName = "Vedantham",
                 Email = "vramana@gmail.com",
-                Mobile = 1234
+                Mobile = "1234567890"
             };
             mock.Setup(slf => slf.DeleteUser(user));           
         }
@@ -84,7 +84,7 @@ namespace CMSSampleDA.Tests
                 FirstName = "Devi",
                 LastName = "Prasad",
                 Email = "DVedanth1@gmail.com",
-                Mobile = 4321
+                Mobile = "1234567890"
             };
             mock.Setup(slf => slf.DeleteUser(user));
         }
@@ -129,7 +129,7 @@ namespace CMSSampleDA.Tests
                 FirstName="Ramana",
                 LastName="Vedantham",
                 Email="vramana@gmail.com",
-                Mobile=1234
+                Mobile= "1234567890"
             }; 
             userrepository.InsertUser(user);           
         }
@@ -148,7 +148,7 @@ namespace CMSSampleDA.Tests
                 FirstName = "Ramana",
                 LastName = "Vedantham",
                 Email = "vramana@gmail.com",
-                Mobile = 1234
+                Mobile = "1234567890"
             };
             userrepository.DeleteUser(user);
         }
@@ -167,7 +167,7 @@ namespace CMSSampleDA.Tests
                 FirstName = "Devi",
                 LastName = "Prasad",
                 Email = "DVedanth1@gmail.com",
-                Mobile = 4321
+                Mobile = "4321567890"
             };
             userrepository.UpdateUser(user);
         }

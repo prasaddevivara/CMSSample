@@ -11,6 +11,7 @@ namespace CMSSample.DA.Repository
     {
         IEnumerable<User> GetUsers();
         User GetUserByID(int UserId);
+        IEnumerable<User> AuthenticateUser(string UserName);
         void InsertUser(User user);
         void DeleteUser(User userID);
         void UpdateUser(User user);

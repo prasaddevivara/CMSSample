@@ -14,6 +14,7 @@ namespace CMSSample.DomainModel
 
         [Required]
         [Display(Name = "UserName")]
+        [StringLength(100)]
         public string UserName { get; set; }
 
         [Required]
@@ -22,17 +23,21 @@ namespace CMSSample.DomainModel
         public string Password { get; set; }
 
         [Display(Name = "FirstName")]
+        [StringLength(100)]
         public string FirstName { get; set; }
 
         [Display(Name = "LastName")]
+        [StringLength(100)]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Email is Required.")]
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress, ErrorMessage = "Email is not valid")]
+        [StringLength(150)]
         public string Email { get; set; }
 
         [Display(Name = "Mobile")]
-        public int Mobile { get; set; }
+        [StringLength(50)]
+        public string Mobile { get; set; }
     }
 }
