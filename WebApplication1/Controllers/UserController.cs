@@ -10,13 +10,15 @@ namespace WebApplication1.Controllers
 {
     public class UserController : Controller
     {
+        private static string WebAPIURL = "https://localhost:44353/api/";
         // GET: User
         public ActionResult Index()
         {
             IEnumerable<UserViewModel> user = null;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44353/api/");
+                client.BaseAddress = new Uri(WebAPIURL);
+                client.DefaultRequestHeaders.Clear();
                 var responseTask = client.GetAsync("User");
                 responseTask.Wait();
 

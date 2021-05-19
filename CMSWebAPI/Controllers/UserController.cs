@@ -28,9 +28,9 @@ namespace CMSWebAPI.Controllers
 
         [HttpGet]
         //[CustomAuthenticationFilter]
-        public IEnumerable<User> AuthenticateUser(string UserName)
+        public IEnumerable<User> GetUserByUserName(string UserName)
         {
-            return _repository.AuthenticateUser(UserName);
+            return _repository.GetUserByUserName(UserName);
         }
 
         [HttpPost]

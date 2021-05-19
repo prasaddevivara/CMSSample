@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(UserViewModel usr)
+        public ActionResult Login(CMSLoginViewModel usr)
         {
             IEnumerable<UserViewModel> user = null;
             using (var client = new HttpClient())

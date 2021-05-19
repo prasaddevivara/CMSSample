@@ -52,7 +52,7 @@ namespace CMSSample.DA.Repository
             return _context.Users.Find(UserId);
         }
 
-        public IEnumerable<User> AuthenticateUser(string UserName)
+        public IEnumerable<User> GetUserByUserName(string UserName)
         {
             return _context.Users.Where(x => x.UserName == UserName).ToList();
         }
