@@ -30,7 +30,7 @@ namespace CMSWebAPI.Controllers
         //[CustomAuthenticationFilter]
         public IEnumerable<User> GetUserByUserName(string UserName)
         {
-            return _repository.GetUserByUserName(UserName);
+            return _repository.GetUsers().Where(x => x.UserName == UserName).ToList();
         }
 
         [HttpPost]

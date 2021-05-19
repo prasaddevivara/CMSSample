@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
@@ -18,47 +21,35 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(CMSLoginViewModel usr)
+        public async Task<ActionResult> Login(CMSLoginViewModel usr)
         {
-            IEnumerable<UserViewModel> user = null;
-            using (var client = new HttpClient())
+            if (ModelState.IsValid)
             {
-                client.BaseAddress = new Uri("https://localhost:44353/api/");
-                var responseTask = client.GetAsync("User?UserName=" + usr.UserName);
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                IEnumerable<UserViewModel> user = null;
+                var tokenBased = string.Empty;
+                using (var client = new HttpClient())
                 {
-                    var readJob = result.Content.ReadAsAsync<IList<UserViewModel>>();
-                    readJob.Wait();
-                    user = readJob.Result;
+                    client.DefaultRequestHeaders.Clear();
+                    client.BaseAddress = new Uri("https://localhost:44353/api/");
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                    var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?UserName=" + usr.UserName + "&UserPassword=" + usr.Password);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
+                        tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
+                        Session["TokenNumber"] = tokenBased;
+                        return RedirectToAction("Index", "User", new { area = "" });
+                    }
+                    else
+                    {
+                        ViewBag.NotValidUser = "Invalid UserName or Passwrod!";
+                        return View();
+                    }
                 }
             }
-            //IEnumerable<UserViewModel> user = null;
-            //using (var client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri("https://localhost:44353/api/");
-            //    var responseTask = client.GetAsync("User");
-            //    responseTask.Wait();
 
-            //    var result = responseTask.Result;
-            //    if (result.IsSuccessStatusCode)
-            //    {
-            //        var readJob = result.Content.ReadAsAsync<IList<UserViewModel>>();
-            //        readJob.Wait();
-            //        user = readJob.Result;
-            //    }
-            //    else
-            //    {
-            //        user = Enumerable.Empty<UserViewModel>();
-            //        ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
-            //    }
-            //}
-
-            //return View(user);
-
-            return RedirectToAction("Index", "User", new { area = "" });
+            return View();          
 
         }
     }

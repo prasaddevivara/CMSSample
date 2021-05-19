@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CMSSample.DA.Repository;
+using CMSSample.DomainModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,12 +11,25 @@ namespace CMSWebAPI.Controllers
 {
     public class AccountController : ApiController
     {
-        [HttpGet]
-        public HttpResponseMessage ValidLogin(string userName, string userPassword)
+        private readonly IUserRepository _repository;
+
+        public AccountController(IUserRepository repository)
         {
-            if(userName == "admin" && userPassword == "Admin")
+            _repository = repository;
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ValidLogin(string UserName, string UserPassword)
+        {            
+            List<User> usr = new List<User>();
+            usr = _repository.GetUsers().Where(x => x.UserName == UserName && x.Password == UserPassword).ToList();
+
+            if (usr.Count() > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, value: TokenManager.GenerateToken(userName));
+                //if (usr == "admin" && userPassword == "Admin")
+                //{
+                    return Request.CreateResponse(HttpStatusCode.OK, value: TokenManager.GenerateToken(UserName));
+                //}
             }
             return Request.CreateErrorResponse(HttpStatusCode.BadGateway, message: "User name and password is invalid");
         }

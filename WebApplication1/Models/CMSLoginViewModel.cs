@@ -8,11 +8,11 @@ namespace WebApplication1.Models
 {
     public class CMSLoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "User Name is Required")]
         [Display(Name = "User Name")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is Required")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
