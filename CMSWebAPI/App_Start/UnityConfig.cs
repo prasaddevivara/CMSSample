@@ -17,6 +17,7 @@ namespace CMSWebAPI
 
             // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IDZRepository, DZRepository>();
             DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));           
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

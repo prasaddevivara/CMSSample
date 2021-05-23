@@ -70,6 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CMSSampleDAContext.cs" />
+    <Compile Include="Repository\DZRepository.cs" />
+    <Compile Include="Repository\IDZRepository.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\UserRepository.cs" />

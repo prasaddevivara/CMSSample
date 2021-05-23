@@ -63,10 +63,11 @@ namespace CMSSample.DA.Repository
             Save();
         }
 
-        public void DeleteUser(User user)
+        public void Delete(Object id)
         {
-            _context.Entry(user).State = EntityState.Deleted;
-           // _context.Users.Remove(user);
+            User usr = new User();
+            usr = _context.Users.Find(id);
+            _context.Users.Remove(usr);
             Save();
         }
 

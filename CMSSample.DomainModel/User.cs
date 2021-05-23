@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,5 +40,12 @@ namespace CMSSample.DomainModel
         [Display(Name = "Mobile")]
         [StringLength(50)]
         public string Mobile { get; set; }
+
+
+        public int DZId { get; set; }
+
+        //[ForeignKey("DZId")]
+        public DZ DZ { get; set; }
+
     }
 }

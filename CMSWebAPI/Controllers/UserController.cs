@@ -28,9 +28,30 @@ namespace CMSWebAPI.Controllers
 
         [HttpGet]
         //[CustomAuthenticationFilter]
+        public User GetUserByID(int UserId)
+        {
+            return _repository.GetUserByID(UserId);
+        }
+
+        [HttpGet]
+        //[CustomAuthenticationFilter]
         public IEnumerable<User> GetUserByUserName(string UserName)
         {
             return _repository.GetUsers().Where(x => x.UserName == UserName).ToList();
+        }
+
+        [HttpPut]
+        //[CustomAuthenticationFilter]
+        public void UpdateUser(User usr)
+        {
+            _repository.UpdateUser(usr);
+        }
+
+        
+        //[CustomAuthenticationFilter]
+        public void Delete(int id)
+        {
+            _repository.Delete(id);
         }
 
         [HttpPost]

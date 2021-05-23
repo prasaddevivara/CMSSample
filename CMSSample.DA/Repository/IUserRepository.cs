@@ -13,7 +13,7 @@ namespace CMSSample.DA.Repository
         User GetUserByID(int UserId);
         IEnumerable<User> GetUserByUserName(string UserName);
         void InsertUser(User user);
-        void DeleteUser(User userID);
+        void Delete(Object userID);
         void UpdateUser(User user);
         void Save();
     }

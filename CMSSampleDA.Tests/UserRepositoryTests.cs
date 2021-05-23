@@ -69,7 +69,7 @@ namespace CMSSampleDA.Tests
                 Email = "vramana@gmail.com",
                 Mobile = "1234567890"
             };
-            mock.Setup(slf => slf.DeleteUser(user));           
+            mock.Setup(slf => slf.Delete(4));           
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace CMSSampleDA.Tests
                 Email = "DVedanth1@gmail.com",
                 Mobile = "1234567890"
             };
-            mock.Setup(slf => slf.DeleteUser(user));
+            mock.Setup(slf => slf.UpdateUser(user));
         }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace CMSSampleDA.Tests
             CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
             IUserRepository userrepository = new UserRepository(cmssampledacontext);
 
-            int userID = 1;
+            int userID = 2;
             User user = new User();
 
             user = userrepository.GetUserByID(userID);
@@ -150,7 +150,7 @@ namespace CMSSampleDA.Tests
                 Email = "vramana@gmail.com",
                 Mobile = "1234567890"
             };
-            userrepository.DeleteUser(user);
+            userrepository.Delete(4);
         }
 
         [TestMethod]
@@ -161,7 +161,7 @@ namespace CMSSampleDA.Tests
 
             User user = new User()
             {
-                UserId=1,
+                UserId=5,
                 UserName = "DVedanth1",
                 Password = "Test123$",
                 FirstName = "Devi",

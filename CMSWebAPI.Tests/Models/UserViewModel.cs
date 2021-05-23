@@ -4,10 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using CMSSample.DomainModel;
 
-namespace WebApplication1.Models
+namespace CMSWebAPI.Models
 {
     public class UserViewModel
     {       
@@ -36,8 +35,7 @@ namespace WebApplication1.Models
 
         public int DZId { get; set; }
 
-        [Display(Name ="DZ Name")]
-        public int DZName { get; set; }
+        public string DZName { get; set; }
 
         public IEnumerable<DZ> DZ { get; set; }
 
