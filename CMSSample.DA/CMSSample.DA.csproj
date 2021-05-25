@@ -70,14 +70,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CMSSampleDAContext.cs" />
+    <Compile Include="Migrations\202105251346389_InitialCreate.cs" />
+    <Compile Include="Migrations\202105251346389_InitialCreate.Designer.cs">
+      <DependentUpon>202105251346389_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202105252051352_Migration_26052021.cs" />
+    <Compile Include="Migrations\202105252051352_Migration_26052021.Designer.cs">
+      <DependentUpon>202105252051352_Migration_26052021.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repository\DZRepository.cs" />
     <Compile Include="Repository\IDZRepository.cs" />
+    <Compile Include="Repository\IIncidentTypeRepository.cs" />
+    <Compile Include="Repository\IncidentTypeRepository.cs" />
+    <Compile Include="Repository\IODZCaseRepository.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ODZCaseRepository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CodeTemplates\EFModelFromDatabase\Context.cs.t4" />
+    <None Include="CodeTemplates\EFModelFromDatabase\EntityType.cs.t4" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +100,22 @@
       <Project>{6a3334a9-508b-4e8f-a51e-f2beda2d1f13}</Project>
       <Name>CMSSample.DomainModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\ReverseEngineerCodeFirst\Context.tt" />
+    <Content Include="CodeTemplates\ReverseEngineerCodeFirst\Entity.tt" />
+    <Content Include="CodeTemplates\ReverseEngineerCodeFirst\Mapping.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202105251346389_InitialCreate.resx">
+      <DependentUpon>202105251346389_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105252051352_Migration_26052021.resx">
+      <DependentUpon>202105252051352_Migration_26052021.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

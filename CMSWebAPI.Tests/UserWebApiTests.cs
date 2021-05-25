@@ -36,27 +36,6 @@ namespace CMSWebAPI.Tests
             }
 
             Assert.IsNotNull(user);
-            //IEnumerable<UserViewModel> user = null;
-            //using (var client = new HttpClient())
-            //{
-            //    client.BaseAddress = new Uri(WebAPIURL);
-            //    client.DefaultRequestHeaders.Clear();
-            //    var responseTask = client.GetAsync("User");
-            //    responseTask.Wait();
-
-                //    var result = responseTask.Result;
-                //    if (result.IsSuccessStatusCode)
-                //    {
-                //        var readJob = result.Content.ReadAsAsync<IList<UserViewModel>>();
-                //        readJob.Wait();
-                //        user = readJob.Result;
-                //    }
-                //    else
-                //    {
-                //        user = Enumerable.Empty<UserViewModel>();
-                //        ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
-                //    }
-                //}
         }
     }
 }

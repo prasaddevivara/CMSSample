@@ -71,14 +71,14 @@
 <script type="text/javascript">
 
     function DeleteUser(id) { 
-       
+        debugger;
         if (confirm("Are you sure to delete User?")) {
 
             $.ajax({
                 type: "POST", 
-                async: false,
-                url: 'User/UserDelete',                              
-                data: JSON.stringify({ 'UserId': id }),
+                url: 'https://localhost:44362/User/Delete',  
+                async: false,                                            
+                data: JSON.stringify({ 'Id': id }),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     if (data.status == "Success") {

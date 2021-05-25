@@ -38,6 +38,7 @@ namespace CMSSample.DA.Repository
 
         public void Delete(object dzID)
         {
+            _context.Database.Log("Deleted DZID: " + dzID);
             DZ dz = new DZ();
             dz = _context.DZ.Find(dzID);
             _context.DZ.Remove(dz);
@@ -61,6 +62,7 @@ namespace CMSSample.DA.Repository
 
         public void InsertDZ(DZ dz)
         {
+            _context.Database.Log("New DZ Inserted" + dz.DZName);
             _context.DZ.Add(dz);
             Save();
         }
@@ -72,6 +74,7 @@ namespace CMSSample.DA.Repository
 
         public void UpdateDZ(DZ dz)
         {
+            _context.Database.Log("DZ updated for DZID" + dz.DZId);
             _context.Entry(dz).State = EntityState.Modified;
             Save();
         }

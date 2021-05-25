@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace CMSSample.DomainModel
 {
-    public class DZ
+    public class IncidentType
     {
         [Key]
-        public int DZId { get; set; }
+        public int IncidentTypeID { get; set; }
 
         [Required]
-        [Display(Name = "DZ Name")]
+        [Display(Name = "IncidentType Name")]
         [StringLength(100)]
-        public string DZName { get; set; }
-
-        public ICollection<User> Users { get; set; }
+        public string IncidentTypeName { get; set; }
 
         public ICollection<ODZCase> ODZCases { get; set; }
     }

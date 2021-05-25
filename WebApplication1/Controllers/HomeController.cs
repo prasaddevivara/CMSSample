@@ -22,6 +22,7 @@ namespace WebApplication1.Controllers
                 client.BaseAddress = new Uri(WebAPIURL);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
                 var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?userName=admin&userPassword=Admin");
+
                 if(responseMessage.IsSuccessStatusCode)
                 {
                     var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
