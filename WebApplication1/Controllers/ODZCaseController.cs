@@ -44,5 +44,107 @@ namespace WebApplication1.Controllers
 
             return View(odzcase);
         }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            ODZCaseEditViewModel odzc = null;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(WebAPIURL);
+                client.DefaultRequestHeaders.Clear();
+                var responseTask = client.GetAsync("ODZCase/Edit");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readJob = result.Content.ReadAsAsync<ODZCaseEditViewModel>();
+                    readJob.Wait();
+                    odzc = readJob.Result;
+                    // ViewBag.DZ = new SelectList(dz.ToList(), "DZId", "DZName");
+                    return View(odzc);
+                }
+                else
+                {
+                   // odzc = ODZCaseEditViewModel.;
+                    ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+                }
+            }
+
+            return View(odzc);
+        }
+
+        [HttpPost]
+        public ActionResult Create(ODZCaseEditViewModel odzcaseEditViewModel)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44353/api/");
+                var responseTask = client.PostAsJsonAsync<ODZCaseEditViewModel>("ODZCase", odzcaseEditViewModel);
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+
+            return View(odzcaseEditViewModel);
+        }
+
+
+        [HttpGet]
+        public ActionResult Edit(int id = 0)
+        {
+            if (id != 0)
+            {
+                using (var client = new HttpClient())
+                {
+                    //IEnumerable<DZ> dzs = null;
+                    ODZCaseEditViewModel odzc = new ODZCaseEditViewModel();
+
+                    client.BaseAddress = new Uri("https://localhost:44353/api/");
+                    HttpResponseMessage response = client.GetAsync("ODZCase/" + id).Result;
+                    odzc = response.Content.ReadAsAsync<ODZCaseEditViewModel>().Result;
+                    return View(odzc);
+                }
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ODZCaseEditViewModel odzc)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44353/api/");
+                HttpResponseMessage response = client.PutAsJsonAsync("ODZCase", odzc).Result;                
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int Id)
+        {
+            using (var client1 = new HttpClient())
+            {
+                client1.DefaultRequestHeaders.Clear();
+                client1.BaseAddress = new Uri("https://localhost:44353/api/");
+                var responseDel = client1.DeleteAsync("ODZCase/" + Id + "/CaseRemove");
+                responseDel.Wait(30000);
+
+                var result = responseDel.Result;
+
+                if (result.IsSuccessStatusCode)
+                    return Json(new { status = "Success", message = "Deleted Succesfully!" });
+            }
+
+            return RedirectToAction("Index", "ODZCase");
+        }
     }
 }

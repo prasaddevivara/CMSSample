@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 using CMSSample.DA.Repository;
 using CMSSample.DomainModel;
 
@@ -17,10 +18,9 @@ namespace CMSWebAPI.Controllers
         {
             _repository = repository;
         }
-
-        [HttpGet]
+                
         //[CustomAuthenticationFilter]
-        public IEnumerable<IncidentType> GetIncidentTypes()
+        public IEnumerable<SelectListItem> GetIncidentTypes()
         {
             return _repository.GetIncidentTypes();
         }

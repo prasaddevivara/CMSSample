@@ -50,7 +50,7 @@ namespace WebApplication1.Controllers
             {
                 client.BaseAddress = new Uri(WebAPIURL);
                 client.DefaultRequestHeaders.Clear();
-                var responseTask = client.GetAsync("DZ");
+                var responseTask = client.GetAsync("DZ/Edit");
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -104,7 +104,7 @@ namespace WebApplication1.Controllers
                     client.BaseAddress = new Uri("https://localhost:44353/api/");
                     HttpResponseMessage response = client.GetAsync("User/GetUserByID?UserID=" + id).Result;
                     usr = response.Content.ReadAsAsync<UserViewModel>().Result;
-                    HttpResponseMessage response1 = client.GetAsync("DZ/GetDZs").Result;
+                    HttpResponseMessage response1 = client.GetAsync("DZ/Edit").Result;
                     dzs = response1.Content.ReadAsAsync<IList<DZ>>().Result;
                     ViewBag.DZ = new SelectList(dzs.ToList(), "DZId", "DZName");
                     

@@ -54,11 +54,44 @@
             @Html.DisplayFor(modelItem => item.CaseDescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-           
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Edit", "Edit", "ODZCase", new { id = item.ODZCaseID }, null) |            
+
+            <a onclick="DeleteODZCase(@item.ODZCaseID)" href="">Delete</a>
         </td>
     </tr>
 }
 
 </table>
+
+<script type="text/javascript">
+
+    function DeleteODZCase(id) {
+        if (confirm("Are you sure to delete User?")) {
+
+            $.ajax({
+                type: "POST",
+                url: 'https://localhost:44362/ODZCase/Delete',
+                async: false,
+                data: JSON.stringify({ 'Id': id }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.status == "Success") {
+                        alert(data.message);
+                        return true;
+                    } else {
+                        alert("Error occurs on the Database level!");
+                        return false;
+                    }
+                },
+                error: function () {
+                    alert("An error has occured!!!");
+                    return false;
+                }
+            });
+        }
+        else {
+            return false;
+        }
+
+    }
+</script>

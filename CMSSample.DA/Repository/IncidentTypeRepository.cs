@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CMSSample.DA.Repository
 {
@@ -36,9 +37,30 @@ namespace CMSSample.DA.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<IncidentType> GetIncidentTypes()
-        {
-            return _context.IncidentType.ToList();            
+        //public IEnumerable<IncidentType> GetIncidentTypes()
+        //{
+        //    return _context.IncidentType.ToList();            
+        //}
+
+
+        public IEnumerable<SelectListItem> GetIncidentTypes()
+        {            
+            List<SelectListItem> IncidentTypes = _context.IncidentType.AsNoTracking()
+                .OrderBy(n => n.IncidentTypeName)
+                    .Select(n =>
+                    new SelectListItem
+                    {
+                        Value = n.IncidentTypeID.ToString(),
+                        Text = n.IncidentTypeName
+                    }).ToList();
+            var IncidentTypesdisp = new SelectListItem()
+            {
+                Value = null,
+                Text = "--- select IncidentType ---"
+            };
+
+            IncidentTypes.Insert(0, IncidentTypesdisp);
+            return new SelectList(IncidentTypes, "Value", "Text");            
         }
     }
 }

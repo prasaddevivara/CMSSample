@@ -16,7 +16,7 @@ namespace CMSSample.DA
       public CMSSampleDAContext()   : base("DefaultConnection")
         {
             //Disable initializer You can turn off the database initializer for your application. Suppose that you don't want to lose existing data in the production environment, then you can turn off the initializer, as shown below:
-            Database.SetInitializer(new NullDatabaseInitializer<CMSSampleDAContext>());
+            //Database.SetInitializer(new NullDatabaseInitializer<CMSSampleDAContext>());
             this.Configuration.LazyLoadingEnabled = false;
         }
 

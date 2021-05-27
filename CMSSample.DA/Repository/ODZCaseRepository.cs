@@ -71,14 +71,43 @@ namespace CMSSample.DA.Repository
             }
         }
 
-        public ODZCase GetODZCaseByID(int ODZCaseId)
+        public ODZCaseEditViewModel CreateODZCase()
         {
-            return _context.ODZCase.Find(ODZCaseId);
+            var incRepo = new IncidentTypeRepository(_context);
+            var dzRepo = new DZRepository(_context);
+            var odzcase = new ODZCaseEditViewModel()
+            {
+                IncidentTypes = incRepo.GetIncidentTypes(),
+                DZS = dzRepo.GetDZs()
+            };
+
+            return odzcase;
         }
 
-        public IEnumerable<ODZCase> GetODZCaseReference(int ODZCaseReference)
+        //public ODZCase GetODZCaseByID(int ODZCaseId)
+        //{
+        //    return _context.ODZCase.Find(ODZCaseId);
+        //}
+
+        public ODZCaseEditViewModel GetODZCaseByID(int odzcID)
         {
-            return _context.ODZCase.Where(x => x.ODZCaseReference == ODZCaseReference).ToList();
+            var incRepo = new IncidentTypeRepository(_context);
+            var dzRepo = new DZRepository(_context);
+            var odzc = _context.ODZCase.Where(x => x.ODZCaseID == odzcID).FirstOrDefault();
+            var odzcase = new ODZCaseEditViewModel()
+            {
+                ODZCaseID = odzc.ODZCaseID,
+                ODZCaseReference = odzc.ODZCaseReference,
+                IncidentTypeID = odzc.IncidentTypeID.ToString(),
+                IncidentTypes = incRepo.GetIncidentTypes(),
+                SelectedCountryofIncidentID = odzc.CountryofIncidentID,
+                DZS = dzRepo.GetDZs(),
+                CaseCoverageAmount = odzc.CaseCoverageAmount,
+                AssistedPerson = odzc.AssistedPerson,
+                CaseDescription = odzc.CaseDescription
+            };
+            //return _context.ODZCase.Where(x => x.ODZCaseID == odzcID).FirstOrDefault();
+            return odzcase;
         }
 
         public void InsertODZCase(ODZCase odzcase)

@@ -70,10 +70,8 @@
 
 <script type="text/javascript">
 
-    function DeleteUser(id) { 
-        debugger;
+    function DeleteUser(id) {         
         if (confirm("Are you sure to delete User?")) {
-
             $.ajax({
                 type: "POST", 
                 url: 'https://localhost:44362/User/Delete',  

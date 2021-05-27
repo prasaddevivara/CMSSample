@@ -11,8 +11,10 @@ namespace CMSSample.DA.Repository
     public interface IODZCaseRepository : IDisposable
     {
         IEnumerable<ODZCaseDisplayViewModel> GetODZCases();
-        ODZCase GetODZCaseByID(int ODZCaseId);
-        IEnumerable<ODZCase> GetODZCaseReference(int ODZCaseReference);
+
+        ODZCaseEditViewModel CreateODZCase();
+        //ODZCase GetODZCaseByID(int ODZCaseId);
+        ODZCaseEditViewModel GetODZCaseByID(int odzcID);
         void InsertODZCase(ODZCase odzcase);
         void Delete(Object ODZCaseID);
         void UpdateODZCase(ODZCase odzcase);

@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CMSSample.DA.Repository
 {
@@ -55,9 +56,29 @@ namespace CMSSample.DA.Repository
             return _context.DZ.Find(DZId);
         }
 
-        public IEnumerable<DZ> GetDZs()
+        public IEnumerable<DZ> GetAllDZs()
         {
             return _context.DZ.ToList();
+        }
+
+        public IEnumerable<SelectListItem> GetDZs()
+        {
+            List<SelectListItem> DZs = _context.DZ.AsNoTracking()
+                .OrderBy(n => n.DZName)
+                    .Select(n =>
+                    new SelectListItem
+                    {
+                        Value = n.DZId.ToString(),
+                        Text = n.DZName
+                    }).ToList();
+            var DZsdisp = new SelectListItem()
+            {
+                Value = null,
+                Text = "--- select IncidentType ---"
+            };
+
+            DZs.Insert(0, DZsdisp);
+            return new SelectList(DZs, "Value", "Text");
         }
 
         public void InsertDZ(DZ dz)

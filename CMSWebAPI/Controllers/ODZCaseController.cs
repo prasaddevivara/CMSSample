@@ -14,43 +14,80 @@ namespace CMSWebAPI.Controllers
     {
 
         private readonly IODZCaseRepository _repository;
-        private readonly IIncidentTypeRepository _repository1;
+        private readonly IIncidentTypeRepository _inctyprepository;
+        private readonly IDZRepository _dzrepository;
 
-        public ODZCaseController(IODZCaseRepository repository, IIncidentTypeRepository repository1)
+        public ODZCaseController(IODZCaseRepository repository, IIncidentTypeRepository inctyprepository, IDZRepository dzrepository)
         {
             _repository = repository;
-            _repository1 = repository1;
+            _inctyprepository = inctyprepository;
+            _dzrepository = dzrepository;
         }
 
-        [HttpGet]        
-        public IEnumerable<ODZCaseDisplayViewModel> GetODZCases()
+           
+        public IEnumerable<ODZCaseDisplayViewModel> Get()
         {
             return _repository.GetODZCases().ToList();
         }
 
-        [HttpGet]
-        
-        public IEnumerable<ODZCase> GetODZCaseReference(int ODZCaseReference)
+        [Route("api/ODZCase/Edit")]
+        public ODZCaseEditViewModel GetODZCaseByEdit()
         {
-            return _repository.GetODZCaseReference(ODZCaseReference);
+            var odzcase = new ODZCaseEditViewModel()
+            {
+                IncidentTypes = _inctyprepository.GetIncidentTypes(),
+                DZS = _dzrepository.GetDZs()
+            };
+
+            return odzcase;
+        }
+
+        [Route("api/ODZCase/{id}")]
+        
+        public ODZCaseEditViewModel GetODZCaseByID(int id)
+        {
+            return _repository.GetODZCaseByID(id);
         }
 
         [HttpPut]
         
-        public void UpdateUser(ODZCase odzcase)
+        public void UpdateODZCase(ODZCaseEditViewModel odzcase)
         {
-            _repository.UpdateODZCase(odzcase);
+            var odzcupd = new ODZCase()
+            {
+                ODZCaseID = odzcase.ODZCaseID,
+                ODZCaseReference = odzcase.ODZCaseReference,
+                IncidentTypeID = Convert.ToInt32(odzcase.IncidentTypeID),
+                CountryofIncidentID = odzcase.SelectedCountryofIncidentID,
+                // IncidentTypes = _inctyprepository.GetIncidentTypes(),
+                CaseCoverageAmount = odzcase.CaseCoverageAmount,
+                AssistedPerson = odzcase.AssistedPerson,
+                CaseDescription = odzcase.CaseDescription
+            };
+            _repository.UpdateODZCase(odzcupd);
         }
-                
-        public void Delete(int odzcaseid)
+               
+        [HttpDelete, Route("api/ODZCase/{id}/CaseRemove")]
+        public void DeleteODZCaseByID(int id)
         {
-            _repository.Delete(odzcaseid);
+            _repository.Delete(id);
         }
 
         [HttpPost]
-        public void PostUsers(ODZCase odzcase)
+        public void PostODZCase(ODZCaseEditViewModel odzcase)
         {
-            _repository.InsertODZCase(odzcase);
+            var odzcins = new ODZCase()
+            {
+                ODZCaseReference = odzcase.ODZCaseReference,
+                IncidentTypeID = Convert.ToInt32(odzcase.IncidentTypeID),
+                CountryofIncidentID = odzcase.SelectedCountryofIncidentID,
+               // IncidentTypes = _inctyprepository.GetIncidentTypes(),
+                CaseCoverageAmount = odzcase.CaseCoverageAmount,
+                AssistedPerson = odzcase.AssistedPerson,
+                CaseDescription = odzcase.CaseDescription                
+            };
+
+            _repository.InsertODZCase(odzcins);
         }
     }
 }
