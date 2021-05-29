@@ -39,7 +39,8 @@ namespace WebApplication1.Controllers
                         var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
                         tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
                         Session["TokenNumber"] = tokenBased;
-                        return RedirectToAction("Index", "User", new { area = "" });
+                        Session["UserName"] = usr.UserName;
+                        return RedirectToAction("Index", "HomeDisp", new { area = "" });
                     }
                     else
                     {

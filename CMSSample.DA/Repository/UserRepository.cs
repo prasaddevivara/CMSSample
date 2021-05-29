@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using CMSSample.DomainModel.ViewModels;
 
 namespace CMSSample.DA.Repository
 {
@@ -52,10 +53,27 @@ namespace CMSSample.DA.Repository
             return _context.Users.Find(UserId);
         }
 
-        public IEnumerable<User> GetUserByUserName(string UserName)
-        {
-            return _context.Users.Where(x => x.UserName == UserName).ToList();
+        public UserDisplayViewModel GetUserByUserName(string UserName)
+        {            
+            using (_context)
+            {
+                User usr = new User();
+                usr = _context.Users.AsNoTracking()
+                    .Include(x => x.DZ)
+                    .Where(y => y.UserName == UserName)
+                    .FirstOrDefault();
+                var usrdisp = new UserDisplayViewModel
+                {
+                    UserName = usr.UserName,
+                    DZName = usr.DZ.DZName,
+                    FirstName = usr.FirstName,
+                    LastName = usr.LastName
+                };
+
+                return usrdisp;
+            }            
         }
+        
 
         public void InsertUser(User user)
         {

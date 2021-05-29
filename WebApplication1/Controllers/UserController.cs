@@ -83,12 +83,15 @@ namespace WebApplication1.Controllers
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index");
+                    //return Json(new { status = "Success", message = "User Created Succesfully!" });
+                    
+                    ViewBag.Inserted = "User registered succesfully!";
+                    return RedirectToAction("Create");
                 }
             }
             ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
 
-            return View(userviewmodel);
+            return View();
         }
 
         [HttpGet]

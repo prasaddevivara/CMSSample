@@ -1,6 +1,7 @@
 ﻿using CMSSample.DA;
 using CMSSample.DA.Repository;
 using CMSSample.DomainModel;
+using CMSSample.DomainModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace CMSWebAPI.Controllers
 
         [HttpGet]
         //[CustomAuthenticationFilter]
-        public IEnumerable<User> GetUserByUserName(string UserName)
+        public UserDisplayViewModel GetUserByUserName(string UserName)
         {
             return _repository.GetUserByUserName(UserName);
             //return _repository.GetUsers().Where(x => x.UserName == UserName).ToList();

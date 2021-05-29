@@ -1,4 +1,5 @@
 ﻿using CMSSample.DomainModel;
+using CMSSample.DomainModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace CMSSample.DA.Repository
     {
         IEnumerable<User> GetUsers();
         User GetUserByID(int UserId);
-        IEnumerable<User> GetUserByUserName(string UserName);
+        UserDisplayViewModel GetUserByUserName(string UserName);
         void InsertUser(User user);
         void Delete(Object userID);
         void UpdateUser(User user);
