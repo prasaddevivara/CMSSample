@@ -85,8 +85,8 @@ namespace WebApplication1.Controllers
                 {
                     //return Json(new { status = "Success", message = "User Created Succesfully!" });
                     
-                    ViewBag.Inserted = "User registered succesfully!";
-                    return RedirectToAction("Create");
+                    //ViewBag.Inserted = "User registered succesfully!";
+                    return RedirectToAction("Index","User");
                 }
             }
             ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");

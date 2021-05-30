@@ -42,26 +42,27 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
-            <h1>Client Management System</h1>
+            
+            <h1><a class="logo">CMS Project</a></h1>
             <ul class="list-unstyled components mb-5">
                 <li class="active">
                     <a href="@Url.Action("Index", "HomeDisp", null)"><span class="fa fa-home mr-3"></span> Homepage</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("Create", "User", null)"><span class="fa fa-user mr-3"></span> Register User</a>
+                    <a href="@Url.Action("Index", "User", null)"><span class="fa fa-user mr-3"></span> User Management</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("Create", "ODZCase", null)"><span class="fa fa-sticky-note mr-3"></span> Create Case</a>
+                    <a href="@Url.Action("Index", "ODZCase", null)"><span class="fa fa-sticky-note mr-3"></span> Case Management</a>
                 </li>
                 @*<li>
-                    <a href="#"><span class="fa fa-sticky-note mr-3"></span> Subcription</a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa fa-paper-plane mr-3"></span> Information</a>
-                </li>*@
+                <a href="#"><span class="fa fa-sticky-note mr-3"></span> Subcription</a>
+            </li>
+            <li>
+                <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
+            </li>
+            <li>
+                <a href="#"><span class="fa fa-paper-plane mr-3"></span> Information</a>
+            </li>*@
                 <li>
                     <a href="@Url.Action("Logout", "HomeDisp", null)"><span class="fa fa-paper-plane mr-3"></span> Logout</a>
                 </li>
