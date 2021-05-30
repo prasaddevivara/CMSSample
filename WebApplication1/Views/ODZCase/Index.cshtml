@@ -10,6 +10,16 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<p>
+    @using (Html.BeginForm("Index", "ODZCase", FormMethod.Get))
+    {
+        @Html.Label("Case Reference Number:")
+        @Html.TextBox("casereference")
+        @Html.Label("Assisted Person:")
+        @Html.TextBox("assistedperson")
+        <input type="submit" value="Search" />
+    }
+</p>
 <table class="table">
     <tr>        
         <th>

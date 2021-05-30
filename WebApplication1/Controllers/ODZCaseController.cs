@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers
         private static string WebAPIURL = "https://localhost:44353/api/";
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string assistedperson, int? casereference)
         {
             IEnumerable<ODZCaseDisplayViewModel> odzcase = null;           
             using (var client = new HttpClient())
@@ -31,9 +31,31 @@ namespace WebApplication1.Controllers
                 {
                     var readJob = result.Content.ReadAsAsync<IList<ODZCaseDisplayViewModel>>();
                     readJob.Wait();
-                    odzcase = readJob.Result;                   
-
-                    return View(odzcase);
+                    odzcase = readJob.Result;
+                    if (casereference == null && string.IsNullOrEmpty(assistedperson))
+                    {
+                        return View(odzcase);
+                    }
+                    else if (casereference == null && !string.IsNullOrEmpty(assistedperson))
+                    {
+                        return View(odzcase.Where(x => x.AssistedPerson.ToLower().Contains(assistedperson.ToLower())).ToList());
+                            //.Where(x => x.AssistedPerson == assistedperson).ToList();
+                        //return View(odzcase);
+                    }
+                    else if (casereference != null && string.IsNullOrEmpty(assistedperson))                   
+                    {
+                        return View( odzcase.Where(x => x.ODZCaseReference == casereference).ToList());                            
+                        //return View(odzcase);
+                    }
+                    else if (casereference != null && !string.IsNullOrEmpty(assistedperson))
+                    {
+                        return View( odzcase.Where(x => x.ODZCaseReference == casereference)
+                            .Where(x => x.AssistedPerson.ToLower().Contains(assistedperson.ToLower())).ToList());
+                    }
+                    else
+                    {
+                        return View(odzcase);
+                    }
                 }
                 else
                 {

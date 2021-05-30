@@ -1,0 +1,42 @@
+﻿@model CMSSample.DomainModel.ViewModels.ODZCaseSearchViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Case Search</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ODZCaseReference, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ODZCaseReference, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.ODZCaseReference, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AssistedPerson, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AssistedPerson, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.AssistedPerson, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+

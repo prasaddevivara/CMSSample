@@ -59,6 +59,7 @@
     <Compile Include="ODZCase.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ODZCaseSearchViewModel.cs" />
     <Compile Include="ViewModels\UserDisplayViewModel.cs" />
     <Compile Include="ViewModels\ODZCaseDisplayViewModel.cs" />
     <Compile Include="ViewModels\ODZCaseEditViewModel.cs" />
