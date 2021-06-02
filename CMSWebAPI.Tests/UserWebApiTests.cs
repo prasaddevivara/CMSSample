@@ -7,35 +7,53 @@ using Moq;
 using System.Collections.Generic;
 using CMSWebAPI.Models;
 using System.Net.Http;
+using CMSWebAPI.Controllers;
 
 namespace CMSWebAPI.Tests
 {
     [TestClass]
     public class UserWebApiTests
     {
-        private static string WebAPIURL = "https://localhost:44353/api/";
-
+       
         [TestMethod]
         public void Test_WebAPIGetAllUsers()
         {
-            IEnumerable<UserViewModel> user = null;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(WebAPIURL);
-                client.DefaultRequestHeaders.Clear();
-                var responseTask = client.GetAsync("User");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readJob = result.Content.ReadAsAsync<IList<UserViewModel>>();
-                    readJob.Wait();
-                    user = readJob.Result;
-                }
-            }
-
-            Assert.IsNotNull(user);
+            //IEnumerable<User> usr = new List<User>();
+            CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
+            IUserRepository usrrep = new UserRepository(cmssampledacontext);
+            UserController usrcntrlr = new UserController(usrrep);            
+            var usr = usrcntrlr.GetUsers();           
+            Assert.IsNotNull(usr);
         }
+
+        //[TestMethod]
+        //public void Test_WebAPIInsertUser()
+        //{
+        //    UserViewModel userviewmodel = new UserViewModel()
+        //    {
+        //        UserName="KarthikV",
+        //        Password= "Test1234",
+        //        FirstName= "Karthik",
+        //        LastName="Vutukuri",
+        //        Email="karthikv@gmail.com",
+        //        Mobile="5468792130",
+        //        DZId=1                
+        //    };
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(WebAPIURL);
+        //        var responseTask = client.PostAsJsonAsync<UserViewModel>("User", userviewmodel);
+        //        responseTask.Wait();
+
+        //        var result = responseTask.Result;
+                
+        //        Assert.IsTrue(result.IsSuccessStatusCode);
+                
+        //    }
+
+            
+       // }
+
     }
 }

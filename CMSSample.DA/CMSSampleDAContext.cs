@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace CMSSample.DA
             this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
 
         public DbSet<DZ> DZ { get; set; }
 
@@ -42,16 +43,16 @@ namespace CMSSample.DA
             modelBuilder.Entity<IncidentType>().Property(b => b.IncidentTypeID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            modelBuilder.Entity<IncidentType>().HasKey(b => b.IncidentTypeID);
-            modelBuilder.Entity<IncidentType>().Property(b => b.IncidentTypeID)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            //modelBuilder.Entity<IncidentType>().HasKey(b => b.IncidentTypeID);
+            //modelBuilder.Entity<IncidentType>().Property(b => b.IncidentTypeID)
+            //    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<ODZCase>().HasKey(b => b.ODZCaseID);
             modelBuilder.Entity<ODZCase>().Property(b => b.ODZCaseID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<User>().HasRequired<DZ>(p => p.DZ)
-                .WithMany(b => b.Users).HasForeignKey<int>(b => b.DZId);
+                .WithMany(b => b.Users).HasForeignKey(b => b.DZId);
 
             modelBuilder.Entity<ODZCase>().HasRequired<IncidentType>(p => p.IncidentType)
             .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.IncidentTypeID);
@@ -60,6 +61,10 @@ namespace CMSSample.DA
                 .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.CountryofIncidentID);
 
             base.OnModelCreating(modelBuilder);
+
+            
+            
+
         }
     }
 }

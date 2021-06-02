@@ -140,16 +140,16 @@ namespace CMSSampleDA.Tests
             CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
             IUserRepository userrepository = new UserRepository(cmssampledacontext);
 
-            User user = new User()
-            {
-                UserId=4,
-                UserName = "VRamana",
-                Password = "mypassword",
-                FirstName = "Ramana",
-                LastName = "Vedantham",
-                Email = "vramana@gmail.com",
-                Mobile = "1234567890"
-            };
+            //User user = new User()
+            //{
+            //    UserId=4,
+            //    UserName = "VRamana",
+            //    Password = "mypassword",
+            //    FirstName = "Ramana",
+            //    LastName = "Vedantham",
+            //    Email = "vramana@gmail.com",
+            //    Mobile = "1234567890"
+            //};
             userrepository.Delete(4);
         }
 

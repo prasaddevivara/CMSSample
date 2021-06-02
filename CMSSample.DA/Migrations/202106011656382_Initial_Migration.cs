@@ -1,9 +1,9 @@
-namespace CMSSample.DA.Migrations
+﻿namespace CMSSample.DA.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Initial_Migration : DbMigration
     {
         public override void Up()
         {
@@ -22,11 +22,17 @@ namespace CMSSample.DA.Migrations
                     {
                         ODZCaseID = c.Int(nullable: false, identity: true),
                         ODZCaseReference = c.Int(nullable: false),
+                        IncidentTypeID = c.Int(nullable: false),
+                        CountryofIncidentID = c.Int(nullable: false),
                         CaseCoverageAmount = c.Int(nullable: false),
                         AssistedPerson = c.String(),
                         CaseDescription = c.String(),
                     })
-                .PrimaryKey(t => t.ODZCaseID);
+                .PrimaryKey(t => t.ODZCaseID)
+                .ForeignKey("dbo.DZs", t => t.CountryofIncidentID, cascadeDelete: true)
+                .ForeignKey("dbo.IncidentTypes", t => t.IncidentTypeID, cascadeDelete: true)
+                .Index(t => t.IncidentTypeID)
+                .Index(t => t.CountryofIncidentID);
             
             CreateTable(
                 "dbo.IncidentTypes",
@@ -54,31 +60,16 @@ namespace CMSSample.DA.Migrations
                 .ForeignKey("dbo.DZs", t => t.DZId, cascadeDelete: true)
                 .Index(t => t.DZId);
             
-            CreateTable(
-                "dbo.ODZCase1",
-                c => new
-                    {
-                        ODZCaseID = c.Int(nullable: false, identity: true),
-                        IncidentTypeID = c.Int(nullable: false),
-                        CountryofIncidentID = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.ODZCaseID)
-                .ForeignKey("dbo.IncidentTypes", t => t.IncidentTypeID, cascadeDelete: true)
-                .ForeignKey("dbo.DZs", t => t.CountryofIncidentID, cascadeDelete: true)
-                .Index(t => t.IncidentTypeID)
-                .Index(t => t.CountryofIncidentID);
-            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.ODZCase1", "CountryofIncidentID", "dbo.DZs");
-            DropForeignKey("dbo.ODZCase1", "IncidentTypeID", "dbo.IncidentTypes");
             DropForeignKey("dbo.Users", "DZId", "dbo.DZs");
-            DropIndex("dbo.ODZCase1", new[] { "CountryofIncidentID" });
-            DropIndex("dbo.ODZCase1", new[] { "IncidentTypeID" });
+            DropForeignKey("dbo.ODZCases", "IncidentTypeID", "dbo.IncidentTypes");
+            DropForeignKey("dbo.ODZCases", "CountryofIncidentID", "dbo.DZs");
             DropIndex("dbo.Users", new[] { "DZId" });
-            DropTable("dbo.ODZCase1");
+            DropIndex("dbo.ODZCases", new[] { "CountryofIncidentID" });
+            DropIndex("dbo.ODZCases", new[] { "IncidentTypeID" });
             DropTable("dbo.Users");
             DropTable("dbo.IncidentTypes");
             DropTable("dbo.ODZCases");

@@ -41,11 +41,11 @@ namespace CMSSample.DomainModel
         [StringLength(50)]
         public string Mobile { get; set; }
 
+        [Required]
+        public virtual int DZId { get; set; }
 
-        public int DZId { get; set; }
-
-        //[ForeignKey("DZId")]
-        public DZ DZ { get; set; }
+        [ForeignKey("DZId")]
+        public virtual DZ DZ { get; set; }
 
     }
 }

@@ -34,6 +34,7 @@ namespace WebApplication1.Models
         public string Email { get; set; }       
         public string Mobile { get; set; }
 
+        [Display(Name = "DZ")]
         public int DZId { get; set; }
 
         [Display(Name ="DZ Name")]

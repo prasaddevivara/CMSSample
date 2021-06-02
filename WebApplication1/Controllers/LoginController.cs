@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace WebApplication1.Controllers
 {
     public class LoginController : Controller
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         // GET: Login
         [HttpGet]
         public ActionResult Login()
@@ -23,34 +25,43 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(CMSLoginViewModel usr)
         {
-            if (ModelState.IsValid)
+            try
             {
-                IEnumerable<UserViewModel> user = null;
-                var tokenBased = string.Empty;
-                using (var client = new HttpClient())
+                if (ModelState.IsValid)
                 {
-                    client.DefaultRequestHeaders.Clear();
-                    client.BaseAddress = new Uri("https://localhost:44353/api/");
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
-                    var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?UserName=" + usr.UserName + "&UserPassword=" + usr.Password);
+                    IEnumerable<UserViewModel> user = null;
+                    var tokenBased = string.Empty;
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Clear();
+                        client.BaseAddress = new Uri("https://localhost:44353/api/");
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                        var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?UserName=" + usr.UserName + "&UserPassword=" + usr.Password);
 
-                    if (responseMessage.IsSuccessStatusCode)
-                    {
-                        var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
-                        tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
-                        Session["TokenNumber"] = tokenBased;
-                        Session["UserName"] = usr.UserName;
-                        return RedirectToAction("Index", "HomeDisp", new { area = "" });
-                    }
-                    else
-                    {
-                        ViewBag.NotValidUser = "Invalid UserName or Passwrod!";
-                        return View();
+                        if (responseMessage.IsSuccessStatusCode)
+                        {
+                            var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
+                            tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
+                            Session["TokenNumber"] = tokenBased;
+                            Session["UserName"] = usr.UserName;
+                            return RedirectToAction("Index", "HomeDisp", new { area = "" });
+                        }
+                        else
+                        {
+                            ViewBag.NotValidUser = "Invalid UserName or Passwrod!";
+                            return View();
+                        }
                     }
                 }
-            }
 
-            return View();          
+                return View();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(DateTime.Now + ": " + ex.Message);
+                logger.Error(DateTime.Now + ": " + ex.StackTrace);
+                return View();
+            }
 
         }
     }

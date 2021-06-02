@@ -45,12 +45,20 @@ namespace CMSSample.DA.Repository
 
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users.ToList();
+            try
+            {
+                return _context.User.ToList();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                throw ex;
+            }
         }
 
         public User GetUserByID(int UserId)
         {
-            return _context.Users.Find(UserId);
+            return _context.User.Find(UserId);
         }
 
         public UserDisplayViewModel GetUserByUserName(string UserName)
@@ -58,7 +66,7 @@ namespace CMSSample.DA.Repository
             using (_context)
             {
                 User usr = new User();
-                usr = _context.Users.AsNoTracking()
+                usr = _context.User.AsNoTracking()
                     .Include(x => x.DZ)
                     .Where(y => y.UserName == UserName)
                     .FirstOrDefault();
@@ -77,15 +85,15 @@ namespace CMSSample.DA.Repository
 
         public void InsertUser(User user)
         {
-            _context.Users.Add(user);
+            _context.User.Add(user);
             Save();
         }
 
         public void Delete(Object id)
         {
             User usr = new User();
-            usr = _context.Users.Find(id);
-            _context.Users.Remove(usr);
+            usr = _context.User.Find(id);
+            _context.User.Remove(usr);
             Save();
         }
 

@@ -24,7 +24,14 @@ namespace CMSWebAPI.Controllers
         //[CustomAuthenticationFilter]
         public IEnumerable<User> GetUsers()
         {
-            return _repository.GetUsers();
+            try
+            {
+                return _repository.GetUsers();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet]
