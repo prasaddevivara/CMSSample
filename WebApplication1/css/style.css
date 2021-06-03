@@ -8330,3 +8330,18 @@ a[data-toggle="collapse"] {
 
 .subscribe-form .form-control {
   background: #4897fc; }
+
+.validation-summary-valid {
+    display: none;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error,
+textarea.input-validation-error,
+select.input-validation-error {
+    background: #FEF1EC;
+    border: 1px solid #CD0A0A;
+}
