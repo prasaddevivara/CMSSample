@@ -10,8 +10,11 @@ namespace CMSSample.DA.Repository
 {
     public interface IUserRepository : IDisposable
     {
-        IEnumerable<User> GetUsers();
-        User GetUserByID(int UserId);
+        //IEnumerable<User> GetUsers();
+
+        IEnumerable<UserDisplayViewModel> GetUsers();
+
+        UserEditViewModel GetUserByID(int UserId);
         UserDisplayViewModel GetUserByUserName(string UserName);
         void InsertUser(User user);
         void Delete(Object userID);

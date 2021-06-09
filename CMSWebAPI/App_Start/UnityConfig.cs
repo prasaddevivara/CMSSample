@@ -20,6 +20,7 @@ namespace CMSWebAPI
             container.RegisterType<IDZRepository, DZRepository>();
             container.RegisterType<IODZCaseRepository, ODZCaseRepository>();
             container.RegisterType<IIncidentTypeRepository, IncidentTypeRepository>();
+            container.RegisterType<IUserRolesRepository, UserRolesRepository>();
             DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));           
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

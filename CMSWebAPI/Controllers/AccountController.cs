@@ -1,5 +1,6 @@
 ﻿using CMSSample.DA.Repository;
 using CMSSample.DomainModel;
+using CMSSample.DomainModel.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace CMSWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage ValidLogin(string UserName, string UserPassword)
         {            
-            List<User> usr = new List<User>();
+            List<UserDisplayViewModel> usr = new List<UserDisplayViewModel>();
             usr = _repository.GetUsers().Where(x => x.UserName == UserName && x.Password == UserPassword).ToList();
 
             if (usr.Count() > 0)

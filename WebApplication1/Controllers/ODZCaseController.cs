@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
     public class ODZCaseController : Controller
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private static string WebAPIURL = "https://localhost:44353/api/";
+        private static string WebAPIURL = "http://localhost/CMSWebAPI/api/";
 
         [HttpGet]
         public ActionResult Index(string assistedperson, int? casereference)
@@ -124,7 +124,7 @@ namespace WebApplication1.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://localhost:44353/api/");
+                    client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
                     var responseTask = client.PostAsJsonAsync<ODZCaseEditViewModel>("ODZCase", odzcaseEditViewModel);
                     responseTask.Wait();
 
@@ -160,7 +160,7 @@ namespace WebApplication1.Controllers
                         //IEnumerable<DZ> dzs = null;
                         ODZCaseEditViewModel odzc = new ODZCaseEditViewModel();
 
-                        client.BaseAddress = new Uri("https://localhost:44353/api/");
+                        client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
                         HttpResponseMessage response = client.GetAsync("ODZCase/" + id).Result;
                         odzc = response.Content.ReadAsAsync<ODZCaseEditViewModel>().Result;
                         return View(odzc);
@@ -184,7 +184,7 @@ namespace WebApplication1.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://localhost:44353/api/");
+                    client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
                     HttpResponseMessage response = client.PutAsJsonAsync("ODZCase", odzc).Result;
                 }
 
@@ -206,7 +206,7 @@ namespace WebApplication1.Controllers
                 using (var client1 = new HttpClient())
                 {
                     client1.DefaultRequestHeaders.Clear();
-                    client1.BaseAddress = new Uri("https://localhost:44353/api/");
+                    client1.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
                     var responseDel = client1.DeleteAsync("ODZCase/" + Id + "/CaseRemove");
                     responseDel.Wait(30000);
 

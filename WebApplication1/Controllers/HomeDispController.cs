@@ -10,7 +10,7 @@ namespace WebApplication1.Controllers
 {
     public class HomeDispController : Controller
     {
-        private static string WebAPIURL = "https://localhost:44353/api/";
+        private static string WebAPIURL = "http://localhost/CMSWebAPI/api/";
         // GET: HomeDisp
         public ActionResult Index()
         {
@@ -21,7 +21,7 @@ namespace WebApplication1.Controllers
             {
                 client.BaseAddress = new Uri(WebAPIURL);
                 client.DefaultRequestHeaders.Clear();
-                var responseTask = client.GetAsync("User/GetUserByUserName?UserName=" + usrName);
+                var responseTask = client.GetAsync("User/" + usrName + "/ByUserName");
                 responseTask.Wait();
 
                 var result = responseTask.Result;

@@ -4,19 +4,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace CMSSample.DomainModel.ViewModels
 {
-    public class UserDisplayViewModel
+    public class UserEditViewModel
     {
         public int UserId { get; set; }
+
+        [Required]
         public string UserName { get; set; }
 
-        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Display(Name = "User DZ")]
-        public string DZName { get; set; }
+        public IEnumerable<SelectListItem> UserDZs{ get; set; }
+
+        [Required]
+        public int DZId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -26,7 +31,9 @@ namespace CMSSample.DomainModel.ViewModels
 
         public string Mobile { get; set; }
 
-        public string RoleName { get; set; }
-
+        public int RoleID { get; set; }
+        [Required]
+        [Display(Name ="User Roles")]
+        public IEnumerable<SelectListItem> UserRoles { get; set; }
     }
 }

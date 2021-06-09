@@ -8,6 +8,7 @@ using System.Net.Http;
 using CMSSample.DomainModel;
 using System.Threading.Tasks;
 using NLog;
+using CMSSample.DomainModel.ViewModels;
 
 namespace WebApplication1.Controllers
 {
@@ -16,14 +17,14 @@ namespace WebApplication1.Controllers
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private static string WebAPIURL = "https://localhost:44353/api/";
+        private static string WebAPIURL = "http://localhost/CMSWebAPI/api/";
        
         [HttpGet]
         public ActionResult Index()
         {
             try
             {
-                IEnumerable<UserViewModel> user = null;
+                IEnumerable<UserDisplayViewModel> user = null;
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(WebAPIURL);
@@ -34,13 +35,13 @@ namespace WebApplication1.Controllers
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readJob = result.Content.ReadAsAsync<IList<UserViewModel>>();
+                        var readJob = result.Content.ReadAsAsync<IList<UserDisplayViewModel>>();
                         readJob.Wait();
                         user = readJob.Result;                        
                     }
                     else
                     {
-                        user = Enumerable.Empty<UserViewModel>();
+                        user = Enumerable.Empty<UserDisplayViewModel>();
                         ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
                         logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!") ;
                     }
@@ -60,31 +61,56 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                IEnumerable<DZ> dz = null;
+                //IEnumerable<DZ> dz = null;
+                //using (var client = new HttpClient())
+                //{
+                //    client.BaseAddress = new Uri(WebAPIURL);
+                //    client.DefaultRequestHeaders.Clear();
+                //    var responseTask = client.GetAsync("DZ/Edit");
+                //    responseTask.Wait();
+
+                //    var result = responseTask.Result;
+                //    if (result.IsSuccessStatusCode)
+                //    {
+                //        var readJob = result.Content.ReadAsAsync<IList<DZ>>();
+                //        readJob.Wait();
+                //        dz = readJob.Result;
+                //        ViewBag.DZ = new SelectList(dz.ToList(), "DZId", "DZName");
+                //    }
+                //    else
+                //    {
+                //        dz = Enumerable.Empty<DZ>();
+                //        ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+                //        logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
+                //    }
+                //}
+
+                //return View();
+                UserEditViewModel usrs = null;
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(WebAPIURL);
                     client.DefaultRequestHeaders.Clear();
-                    var responseTask = client.GetAsync("DZ/Edit");
+                    var responseTask = client.GetAsync("User/Edit");
                     responseTask.Wait();
 
                     var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var readJob = result.Content.ReadAsAsync<IList<DZ>>();
+                        var readJob = result.Content.ReadAsAsync<UserEditViewModel>();
                         readJob.Wait();
-                        dz = readJob.Result;
-                        ViewBag.DZ = new SelectList(dz.ToList(), "DZId", "DZName");
+                        usrs = readJob.Result;
+                        // ViewBag.DZ = new SelectList(dz.ToList(), "DZId", "DZName");
+                        return View(usrs);
                     }
                     else
                     {
-                        dz = Enumerable.Empty<DZ>();
+                        // odzc = ODZCaseEditViewModel.;
                         ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
-                        logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
                     }
                 }
 
-                return View();
+                return View(usrs);
             }
             catch (Exception ex)
             {
@@ -95,14 +121,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(UserViewModel userviewmodel)
+        public ActionResult Create(UserEditViewModel usereditviewmodel)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://localhost:44353/api/");
-                    var responseTask = client.PostAsJsonAsync<UserViewModel>("User", userviewmodel);
+                    client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                    var responseTask = client.PostAsJsonAsync<UserEditViewModel>("User", usereditviewmodel);
                     responseTask.Wait();
 
                     var result = responseTask.Result;
@@ -138,14 +164,14 @@ namespace WebApplication1.Controllers
                     using (var client = new HttpClient())
                     {
                         IEnumerable<DZ> dzs = null;
-                        UserViewModel usr = new UserViewModel();
+                        UserEditViewModel usr = new UserEditViewModel();
 
-                        client.BaseAddress = new Uri("https://localhost:44353/api/");
-                        HttpResponseMessage response = client.GetAsync("User/GetUserByID?UserID=" + id).Result;
-                        usr = response.Content.ReadAsAsync<UserViewModel>().Result;
-                        HttpResponseMessage response1 = client.GetAsync("DZ/Edit").Result;
-                        dzs = response1.Content.ReadAsAsync<IList<DZ>>().Result;
-                        ViewBag.DZ = new SelectList(dzs.ToList(), "DZId", "DZName");
+                        client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                        HttpResponseMessage response = client.GetAsync("User/" + id).Result;
+                        usr = response.Content.ReadAsAsync<UserEditViewModel>().Result;
+                        //HttpResponseMessage response1 = client.GetAsync("DZ/Edit").Result;
+                        //dzs = response1.Content.ReadAsAsync<IList<DZ>>().Result;
+                        //ViewBag.DZ = new SelectList(dzs.ToList(), "DZId", "DZName");
 
                         // usr.DZviewmodel = dzs;
                         return View(usr);
@@ -163,14 +189,14 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(User usr)
+        public ActionResult Edit(UserEditViewModel usr)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://localhost:44353/api/");
-                    HttpResponseMessage response = client.PutAsJsonAsync("User/UpdateUser", usr).Result;
+                    client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                    HttpResponseMessage response = client.PutAsJsonAsync("User", usr).Result;
                     //return View(response.Content.ReadAsAsync<User>().Result);
                 }
 
@@ -192,8 +218,8 @@ namespace WebApplication1.Controllers
                 using (var client1 = new HttpClient())
                 {
                     client1.DefaultRequestHeaders.Clear();
-                    client1.BaseAddress = new Uri("https://localhost:44353/api/");
-                    var responseDel = client1.DeleteAsync("User/Delete?id=" + Id);
+                    client1.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                    var responseDel = client1.DeleteAsync("User/" + Id + "/UserRemove");
                     responseDel.Wait(30000);
 
                     var result = responseDel.Result;

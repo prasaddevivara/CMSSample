@@ -14,19 +14,21 @@ namespace CMSWebAPI.Controllers
     public class UserController : ApiController
     {
         private readonly IUserRepository _repository;
+        private readonly IUserRolesRepository _usrroleprepository;
+        private readonly IDZRepository _dzrepository;
 
-        public UserController(IUserRepository repository)
+        public UserController(IUserRepository repository, IUserRolesRepository usrroleprepository, IDZRepository dzrepository)
         {
             _repository = repository;
+            _usrroleprepository = usrroleprepository;
+            _dzrepository = dzrepository;
         }
 
-        [HttpGet]
-        //[CustomAuthenticationFilter]
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserDisplayViewModel> Get()
         {
             try
             {
-                return _repository.GetUsers();
+                return _repository.GetUsers().ToList();
             }
             catch (Exception ex)
             {
@@ -34,15 +36,27 @@ namespace CMSWebAPI.Controllers
             }
         }
 
-        [HttpGet]
-        //[CustomAuthenticationFilter]
-        public User GetUserByID(int UserId)
+        [Route("api/User/Edit")]
+        public UserEditViewModel GetUserByEdit()
         {
-            return _repository.GetUserByID(UserId);
+            var usrs = new UserEditViewModel()
+            {
+                UserRoles = _usrroleprepository.GetAllUserRoles(),
+                UserDZs = _dzrepository.GetDZs()
+            };
+
+            return usrs;
         }
 
-        [HttpGet]
+        [Route("api/User/{id}")]
         //[CustomAuthenticationFilter]
+        public UserEditViewModel GetUserByID(int id)
+        {
+            return _repository.GetUserByID(id);
+        }
+
+
+        [Route("api/User/{UserName}/ByUserName")]
         public UserDisplayViewModel GetUserByUserName(string UserName)
         {
             return _repository.GetUserByUserName(UserName);
@@ -51,22 +65,47 @@ namespace CMSWebAPI.Controllers
 
         [HttpPut]
         //[CustomAuthenticationFilter]
-        public void UpdateUser(User usr)
+        public void UpdateUser(UserEditViewModel user)
         {
+            var usr = new User()
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                Password = user.Password,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Mobile = user.Mobile,
+                DZId = Convert.ToInt32(user.DZId),
+                RoleID = Convert.ToInt32(user.RoleID)
+            };
             _repository.UpdateUser(usr);
         }
 
-        
+
         //[CustomAuthenticationFilter]
+        [HttpDelete, Route("api/User/{id}/UserRemove")]
         public void Delete(int id)
         {
             _repository.Delete(id);
         }
 
         [HttpPost]
-        public void PostUsers(User user)
+        public void PostUsers(UserEditViewModel user)
         {
-            _repository.InsertUser(user);
+            var usr = new User()
+            {
+                UserName = user.UserName,
+                Password = user.Password,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Mobile = user.Mobile,
+                DZId = Convert.ToInt32(user.DZId),
+                RoleID = Convert.ToInt32(user.RoleID)
+            };
+                       
+            _repository.InsertUser(usr);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CMSSample.DA;
 using CMSSample.DA.Repository;
 using CMSSample.DomainModel;
+using CMSSample.DomainModel.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -15,10 +16,10 @@ namespace CMSSampleDA.Tests
         [TestMethod]
         public void Test_GetMockAllUsers()
         {
-            List<User> usrs = new List<User>() 
+            List<UserDisplayViewModel> usrs = new List<UserDisplayViewModel>() 
             { 
-                new User{UserId=1, UserName="DVedanth1", Password="Test123$", FirstName="Devi", LastName="Prasad", Email="DVedanth1@gmail.com", Mobile="1234567890" },
-                new User{UserId=2, UserName="GRam", Password="mock123$", FirstName="Ram", LastName="Grand", Email="GRam@gmail.com", Mobile="1234567890" }
+                new UserDisplayViewModel{UserId=1, UserName="DVedanth1", Password="Test123$", FirstName="Devi", LastName="Prasad", Email="DVedanth1@gmail.com", Mobile="1234567890",DZName="India", RoleName="Admin" },
+                new UserDisplayViewModel{UserId=2, UserName="GRam", Password="mock123$", FirstName="Ram", LastName="Grand", Email="GRam@gmail.com", Mobile="1234567890", DZName="France", RoleName="User" }
             };
             var mock = new Mock<IUserRepository>();
             mock.Setup(slf => slf.GetUsers()).Returns(usrs);
@@ -30,8 +31,8 @@ namespace CMSSampleDA.Tests
         public void Test_GetMockUserByID()
         {           
             var mock = new Mock<IUserRepository>();
-            User usr = new User()
-            { UserId = 1, UserName = "DVedanth1", Password = "Test123$", FirstName = "Devi", LastName = "Prasad", Email = "DVedanth1@gmail.com", Mobile = "1234567890" };
+            UserEditViewModel usr = new UserEditViewModel()
+            { UserId = 1, UserName = "DVedanth1", Password = "Test123$", FirstName = "Devi", LastName = "Prasad", Email = "DVedanth1@gmail.com", Mobile = "1234567890", DZId = 1, RoleID = 1 };
             
             int userID = 1;
             mock.Setup(slf => slf.GetUserByID(userID)).Returns(usr);
@@ -95,7 +96,7 @@ namespace CMSSampleDA.Tests
             CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
             IUserRepository userrepository = new UserRepository(cmssampledacontext);
 
-            IEnumerable<User> lstUsers;
+            IEnumerable<UserDisplayViewModel> lstUsers;
 
             lstUsers = userrepository.GetUsers();
 
@@ -109,7 +110,7 @@ namespace CMSSampleDA.Tests
             IUserRepository userrepository = new UserRepository(cmssampledacontext);
 
             int userID = 2;
-            User user = new User();
+            UserEditViewModel user = new UserEditViewModel();
 
             user = userrepository.GetUserByID(userID);
 

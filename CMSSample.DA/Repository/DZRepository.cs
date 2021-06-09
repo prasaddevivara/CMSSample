@@ -74,7 +74,7 @@ namespace CMSSample.DA.Repository
             var DZsdisp = new SelectListItem()
             {
                 Value = null,
-                Text = "--- select IncidentType ---"
+                Text = "--- select DZ ---"
             };
 
             DZs.Insert(0, DZsdisp);

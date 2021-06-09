@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApplication1.Models.UserViewModel>
+﻿@model IEnumerable<CMSSample.DomainModel.ViewModels.UserDisplayViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -13,13 +13,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -33,37 +27,43 @@
         <th>
             @Html.DisplayNameFor(model => model.Mobile)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DZName)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Mobile)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", "User", new { id = item.UserId }, null) |            
-            <a onclick="DeleteUser(@item.UserId)" href="">Delete</a>
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FirstName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LastName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Mobile)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RoleName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DZName)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", "User", new { id = item.UserId }, null) |
+        <a onclick="DeleteUser(@item.UserId)" href="">Delete</a>
+    </td>
+</tr>
 }
 
 </table>
@@ -74,7 +74,7 @@
         if (confirm("Are you sure to delete User?")) {
             $.ajax({
                 type: "POST", 
-                url: 'https://localhost:44362/User/Delete',  
+                url: 'http://localhost/CMSSample.WebApp/User/Delete',  
                 async: false,                                            
                 data: JSON.stringify({ 'Id': id }),
                 contentType: "application/json; charset=utf-8",

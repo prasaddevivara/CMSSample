@@ -34,7 +34,7 @@ namespace WebApplication1.Controllers
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Clear();
-                        client.BaseAddress = new Uri("https://localhost:44353/api/");
+                        client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
                         var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?UserName=" + usr.UserName + "&UserPassword=" + usr.Password);
 
@@ -62,7 +62,6 @@ namespace WebApplication1.Controllers
                 logger.Error(DateTime.Now + ": " + ex.StackTrace);
                 return View();
             }
-
         }
     }
 }

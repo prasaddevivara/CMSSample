@@ -43,22 +43,85 @@ namespace CMSSample.DA.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserDisplayViewModel> GetUsers()
         {
-            try
+            using (_context)
             {
-                return _context.User.ToList();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.StackTrace);
-                throw ex;
+                List<User> users = new List<User>();
+                users = _context.User.AsNoTracking()
+                    .Include(x => x.UserRoles)
+                    .Include(x => x.DZ)
+                    .ToList();
+
+                if (users != null)
+                {
+                    List<UserDisplayViewModel> usersDisplay = new List<UserDisplayViewModel>();
+                    foreach (var x in users)
+                    {
+                        var userDisplay = new UserDisplayViewModel()
+                        {
+                            UserId = x.UserId,
+                            UserName = x.UserName,
+                            Password = x.Password,
+                            RoleName = x.UserRoles.RoleName,
+                            DZName = x.DZ.DZName,
+                            FirstName = x.FirstName,
+                            LastName = x.LastName,
+                            Email = x.Email,
+                            Mobile = x.Mobile
+                        };
+                        usersDisplay.Add(userDisplay);
+                    }
+                    return usersDisplay;
+                }
+                return null;
             }
         }
 
-        public User GetUserByID(int UserId)
+        public UserEditViewModel CreateUser()
         {
-            return _context.User.Find(UserId);
+            var usrroleRepo = new UserRolesRepository(_context);
+            var dzRepo = new DZRepository(_context);
+            var usrs = new UserEditViewModel()
+            {
+                UserRoles = usrroleRepo.GetAllUserRoles(),
+                UserDZs = dzRepo.GetDZs()
+            };
+
+            return usrs;
+        }
+
+        public UserEditViewModel GetUserByID(int userid)
+        {
+            //return _context.User.Find(UserId);
+
+            var userroleRepo = new UserRolesRepository(_context);
+            var dzRepo = new DZRepository(_context);
+            var usr = _context.User.Where(x => x.UserId == userid).FirstOrDefault();
+            var useredt = new UserEditViewModel()
+            {
+                UserId = usr.UserId,
+                UserName = usr.UserName,
+                Password = usr.Password,
+                UserDZs = dzRepo.GetDZs(),
+                DZId = usr.DZId,
+                FirstName = usr.FirstName,
+                LastName = usr.LastName,
+                Email = usr.Email,
+                Mobile = usr.Mobile,
+                RoleID = usr.RoleID,
+                UserRoles = userroleRepo.GetAllUserRoles()
+                //ODZCaseReference = odzc.ODZCaseReference,
+                //IncidentTypeID = odzc.IncidentTypeID.ToString(),
+                //IncidentTypes = incRepo.GetIncidentTypes(),
+                //SelectedCountryofIncidentID = odzc.CountryofIncidentID,
+                //DZS = dzRepo.GetDZs(),
+                //CaseCoverageAmount = odzc.CaseCoverageAmount,
+                //AssistedPerson = odzc.AssistedPerson,
+                //CaseDescription = odzc.CaseDescription
+            };
+            //return _context.ODZCase.Where(x => x.ODZCaseID == odzcID).FirstOrDefault();
+            return useredt;
         }
 
         public UserDisplayViewModel GetUserByUserName(string UserName)

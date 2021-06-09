@@ -19,6 +19,7 @@ namespace CMSSample.DA
             //Disable initializer You can turn off the database initializer for your application. Suppose that you don't want to lose existing data in the production environment, then you can turn off the initializer, as shown below:
             //Database.SetInitializer(new NullDatabaseInitializer<CMSSampleDAContext>());
             this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<User> User { get; set; }
@@ -28,6 +29,8 @@ namespace CMSSample.DA
         public DbSet<IncidentType> IncidentType { get; set; }
 
         public DbSet<ODZCase> ODZCase { get; set; }
+
+        public DbSet<UserRoles> UserRoles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -43,9 +46,9 @@ namespace CMSSample.DA
             modelBuilder.Entity<IncidentType>().Property(b => b.IncidentTypeID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            //modelBuilder.Entity<IncidentType>().HasKey(b => b.IncidentTypeID);
-            //modelBuilder.Entity<IncidentType>().Property(b => b.IncidentTypeID)
-            //    .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserRoles>().HasKey(u => u.UserRoleID);
+            modelBuilder.Entity<UserRoles>().Property(b => b.UserRoleID)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<ODZCase>().HasKey(b => b.ODZCaseID);
             modelBuilder.Entity<ODZCase>().Property(b => b.ODZCaseID)
@@ -59,6 +62,10 @@ namespace CMSSample.DA
 
             modelBuilder.Entity<ODZCase>().HasRequired<DZ>(p => p.DZ)
                 .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.CountryofIncidentID);
+
+
+            modelBuilder.Entity<User>().HasRequired<UserRoles>(p => p.UserRoles)
+                .WithMany(b => b.Users).HasForeignKey<int>(b => b.RoleID);
 
             base.OnModelCreating(modelBuilder);
 

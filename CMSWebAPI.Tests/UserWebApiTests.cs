@@ -21,8 +21,10 @@ namespace CMSWebAPI.Tests
             //IEnumerable<User> usr = new List<User>();
             CMSSampleDAContext cmssampledacontext = new CMSSampleDAContext();
             IUserRepository usrrep = new UserRepository(cmssampledacontext);
-            UserController usrcntrlr = new UserController(usrrep);            
-            var usr = usrcntrlr.GetUsers();           
+            IUserRolesRepository usrrolerep = new UserRolesRepository(cmssampledacontext);
+            IDZRepository usrdzrep = new DZRepository(cmssampledacontext);
+            UserController usrcntrlr = new UserController(usrrep, usrrolerep, usrdzrep);            
+            var usr = usrcntrlr.Get();           
             Assert.IsNotNull(usr);
         }
 
