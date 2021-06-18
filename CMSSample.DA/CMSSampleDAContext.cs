@@ -1,14 +1,9 @@
 ﻿using CMSSample.DomainModel;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.ModelConfiguration.Configuration;
+
+using CMSSample.DomainModel;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CMSSample.DA
 {
@@ -32,6 +27,10 @@ namespace CMSSample.DA
 
         public DbSet<UserRoles> UserRoles { get; set; }
 
+        public DbSet<Task> Task { get; set; }
+
+        public DbSet<TaskType> TaskType { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DZ>().HasKey(p => p.DZId);
@@ -54,18 +53,41 @@ namespace CMSSample.DA
             modelBuilder.Entity<ODZCase>().Property(b => b.ODZCaseID)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
+            modelBuilder.Entity<Task>().HasKey(b => b.TaskId);
+            modelBuilder.Entity<Task>().Property(b => b.TaskId)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
             modelBuilder.Entity<User>().HasRequired<DZ>(p => p.DZ)
-                .WithMany(b => b.Users).HasForeignKey(b => b.DZId);
+                .WithMany(b => b.Users).HasForeignKey(b => b.DZId).WillCascadeOnDelete(false);
+                
 
             modelBuilder.Entity<ODZCase>().HasRequired<IncidentType>(p => p.IncidentType)
-            .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.IncidentTypeID);
+            .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.IncidentTypeID).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ODZCase>().HasRequired<DZ>(p => p.DZ)
-                .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.CountryofIncidentID);
+                .WithMany(b => b.ODZCases).HasForeignKey<int>(b => b.CountryofIncidentID).WillCascadeOnDelete(false);
 
 
             modelBuilder.Entity<User>().HasRequired<UserRoles>(p => p.UserRoles)
-                .WithMany(b => b.Users).HasForeignKey<int>(b => b.RoleID);
+                .WithMany(b => b.Users).HasForeignKey<int>(b => b.RoleID).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Task>().HasRequired<TaskType>(p => p.TaskType)
+                .WithMany(b => b.Tasks).HasForeignKey<int>(b => b.TaskTypeID).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Task>().HasRequired<User>(p => p.User)
+                .WithMany(b => b.Tasks).HasForeignKey<int>(b => b.UserId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Task>().HasRequired<ODZCase>(p => p.ODZCase)
+                .WithMany(b => b.Tasks).HasForeignKey<int>(b => b.ODZCaseID).WillCascadeOnDelete(false);
+
+            
+
+            //foreach (var relationship in modelBuilder.Entity<User>.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            //{
+            //    relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            //}
 
             base.OnModelCreating(modelBuilder);
 

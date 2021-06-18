@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using CMSSample.DomainModel;
 
 namespace CMSSample.DomainModel
 {
@@ -28,6 +28,8 @@ namespace CMSSample.DomainModel
         public virtual IncidentType IncidentType { get; set; }
 
         public virtual DZ DZ { get; set; }
+
+        public virtual ICollection<Task> Tasks { get; set; }
 
     }
 }

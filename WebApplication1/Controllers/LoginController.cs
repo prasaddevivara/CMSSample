@@ -42,7 +42,12 @@ namespace WebApplication1.Controllers
                         {
                             var resultMessage = responseMessage.Content.ReadAsStringAsync().Result;
                             tokenBased = JsonConvert.DeserializeObject<string>(resultMessage);
-                            Session["TokenNumber"] = tokenBased;
+                            System.Web.HttpContext.Current.Response.Cookies.Add(new System.Web.HttpCookie("TokenNumber")
+                            {
+                                Value = tokenBased,
+                                HttpOnly = true
+                            });
+                            //Session["TokenNumber"] = tokenBased;
                             Session["UserName"] = usr.UserName;
                             return RedirectToAction("Index", "HomeDisp", new { area = "" });
                         }

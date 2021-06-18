@@ -37,12 +37,6 @@ namespace CMSSample.DA.Repository
             GC.SuppressFinalize(this);
         }
 
-        //public IEnumerable<IncidentType> GetIncidentTypes()
-        //{
-        //    return _context.IncidentType.ToList();            
-        //}
-
-
         public IEnumerable<SelectListItem> GetIncidentTypes()
         {            
             List<SelectListItem> IncidentTypes = _context.IncidentType.AsNoTracking()

@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace CMSWebAPI.Controllers
 {
+    [CustomAuthenticationFilter(Roles = "Admin,User")]
     public class ODZCaseController : ApiController
     {
 

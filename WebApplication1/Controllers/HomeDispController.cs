@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,8 +20,11 @@ namespace WebApplication1.Controllers
             UserDisplayViewModel user = null;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(WebAPIURL);
                 client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(WebAPIURL);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", parameter: HttpContext.Request.Cookies.Get("TokenNumber").Value.ToString());
+
                 var responseTask = client.GetAsync("User/" + usrName + "/ByUserName");
                 responseTask.Wait();
 

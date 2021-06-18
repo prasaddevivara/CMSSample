@@ -12,13 +12,17 @@ namespace CMSWebAPI
     {
         //        private static string Secret = Guid.NewGuid().ToString();
         private static string Secret = "ASDJKLFWEOI3823/JKHAGH2P84TMO3YMELEWJDEJTWTEXPRFPGUWMXFQKFUMVLQIURMDOWEQKD0opd+kKAPT";
-        public static string GenerateToken(string userName)
+        public static string GenerateToken(string userName, string userRole)
         {
             byte[] key = Convert.FromBase64String(Secret);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims: new[] { new Claim(type: ClaimTypes.Name, value: userName) }),
+                Subject = new ClaimsIdentity(claims: new[] 
+                { 
+                    new Claim(type: ClaimTypes.Name, value: userName),
+                    new Claim(type: ClaimTypes.Role, value: userRole)
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(securityKey, 
                 algorithm:SecurityAlgorithms.HmacSha256Signature)

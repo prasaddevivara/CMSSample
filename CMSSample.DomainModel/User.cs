@@ -52,5 +52,7 @@ namespace CMSSample.DomainModel
 
         public virtual UserRoles UserRoles { get; set; }
 
+        public virtual ICollection<Task> Tasks { get; set; }
+
     }
 }

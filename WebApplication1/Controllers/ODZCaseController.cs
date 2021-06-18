@@ -9,6 +9,7 @@ using CMSSample.DomainModel;
 using System.Threading.Tasks;
 using CMSSample.DomainModel.ViewModels;
 using NLog;
+using System.Net.Http.Headers;
 
 namespace WebApplication1.Controllers
 {
@@ -25,8 +26,7 @@ namespace WebApplication1.Controllers
                 IEnumerable<ODZCaseDisplayViewModel> odzcase = null;
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(WebAPIURL);
-                    client.DefaultRequestHeaders.Clear();
+                    CommonHttpProps(client);
                     var responseTask = client.GetAsync("ODZCase");
                     responseTask.Wait();
 
@@ -86,8 +86,7 @@ namespace WebApplication1.Controllers
                 ODZCaseEditViewModel odzc = null;
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(WebAPIURL);
-                    client.DefaultRequestHeaders.Clear();
+                    CommonHttpProps(client);
                     var responseTask = client.GetAsync("ODZCase/Edit");
                     responseTask.Wait();
 
@@ -124,7 +123,7 @@ namespace WebApplication1.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                    CommonHttpProps(client);
                     var responseTask = client.PostAsJsonAsync<ODZCaseEditViewModel>("ODZCase", odzcaseEditViewModel);
                     responseTask.Wait();
 
@@ -152,15 +151,13 @@ namespace WebApplication1.Controllers
         {
             try
             {
-
                 if (id != 0)
                 {
                     using (var client = new HttpClient())
                     {
                         //IEnumerable<DZ> dzs = null;
                         ODZCaseEditViewModel odzc = new ODZCaseEditViewModel();
-
-                        client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                        CommonHttpProps(client);
                         HttpResponseMessage response = client.GetAsync("ODZCase/" + id).Result;
                         odzc = response.Content.ReadAsAsync<ODZCaseEditViewModel>().Result;
                         return View(odzc);
@@ -184,7 +181,7 @@ namespace WebApplication1.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                    CommonHttpProps(client);
                     HttpResponseMessage response = client.PutAsJsonAsync("ODZCase", odzc).Result;
                 }
 
@@ -205,8 +202,7 @@ namespace WebApplication1.Controllers
             {
                 using (var client1 = new HttpClient())
                 {
-                    client1.DefaultRequestHeaders.Clear();
-                    client1.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
+                    CommonHttpProps(client1);
                     var responseDel = client1.DeleteAsync("ODZCase/" + Id + "/CaseRemove");
                     responseDel.Wait(30000);
 
@@ -224,6 +220,14 @@ namespace WebApplication1.Controllers
                 logger.Error(DateTime.Now + ": " + ex.StackTrace);
                 return RedirectToAction("Index", "ODZCase");
             }
+        }
+
+        private void CommonHttpProps(HttpClient client)
+        {
+            client.DefaultRequestHeaders.Clear();
+            client.BaseAddress = new Uri(WebAPIURL);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme: "Bearer", parameter: HttpContext.Request.Cookies.Get("TokenNumber").Value.ToString());
         }
     }
 }

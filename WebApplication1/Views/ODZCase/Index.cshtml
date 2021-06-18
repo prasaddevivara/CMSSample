@@ -13,95 +13,125 @@
 <p>
     @using (Html.BeginForm("Index", "ODZCase", FormMethod.Get))
     {
-        @Html.Label("Case Reference Number:")
-        @Html.TextBox("casereference")
-        @Html.Label("Assisted Person:")
-        @Html.TextBox("assistedperson")
-        <input type="submit" value="Search" />
+    <div class="container">
+        <div class="row">
+            <div class="col-7 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">                                
+                                @Html.Label("Case Reference Number:")
+                                <div class="form-group"> @Html.TextBox("casereference")</div>
+                             </div>  
+                            <div class="col">
+                                @Html.Label("Assisted Person:")
+                                <div class="form-group">@Html.TextBox("assistedperson")</div>
+                            </div>
+                            <div class="col">
+                                
+                                    @Html.Label("      ")
+                                    <div class="form-group" ><input type="submit" value="Search" /></div>
+                               
+                                
+                            </div>
+
+                                
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+      </div>
     }
 </p>
-<table class="table">
-    <tr>        
-        <th>
-            @Html.DisplayNameFor(model => model.ODZCaseReference)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IncidentTypeName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DZName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CaseCoverageAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssistedPerson)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CaseDescription)
-        </th>
-        <th></th>
-    </tr>
+<div class="table-responsive">
+    <table class="table table-bordered  table-responsive-sm table-hover" width="100px">
+        <tr>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.ODZCaseReference)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.IncidentTypeName)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.DZName)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.CaseCoverageAmount)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.AssistedPerson)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.CaseDescription)
+            </th>
+            <th style="text-align:center;background-color:lightblue"></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ODZCaseReference)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IncidentTypeName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DZName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CaseCoverageAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssistedPerson)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CaseDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", "ODZCase", new { id = item.ODZCaseID }, null) |            
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:100px">
+                    @Html.DisplayFor(modelItem => item.ODZCaseReference)
+                </td>
+                <td style="width:100px">
+                    @Html.DisplayFor(modelItem => item.IncidentTypeName)
+                </td>
+                <td style="width:100px">
+                    @Html.DisplayFor(modelItem => item.DZName)
+                </td>
+                <td style="width:80px">
+                    @Html.DisplayFor(modelItem => item.CaseCoverageAmount)
+                </td>
+                <td style="width:80px">
+                    @Html.DisplayFor(modelItem => item.AssistedPerson)
+                </td>
+                <td style="width:120px">
+                    @Html.DisplayFor(modelItem => item.CaseDescription)
+                </td>
+                <td style="width:120px">
+                    @Html.ActionLink("Edit", "Edit", "ODZCase", new { id = item.ODZCaseID }, null) |
 
-            <a onclick="DeleteODZCase(@item.ODZCaseID)" href="">Delete</a>
-        </td>
-    </tr>
-}
+                    @Html.ActionLink("Task", "Create", "Task", new { id = item.ODZCaseID }, null) |
+                    
+                    <a onclick="DeleteODZCase(@item.ODZCaseID)" href="">Delete</a>
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+</div>
+
 
 <script type="text/javascript">
 
-    function DeleteODZCase(id) {
-        if (confirm("Are you sure to delete User?")) {
+        function DeleteODZCase(id) {
+            if (confirm("Are you sure to delete User?")) {
 
-            $.ajax({
-                type: "POST",
-                url: 'https://localhost:44362/ODZCase/Delete',
-                async: false,
-                data: JSON.stringify({ 'Id': id }),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data.status == "Success") {
-                        alert(data.message);
-                        return true;
-                    } else {
-                        alert("Error occurs on the Database level!");
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost/CMSSample.WebApp/ODZCase/Delete',
+                    async: false,
+                    data: JSON.stringify({ 'Id': id }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.status == "Success") {
+                            alert(data.message);
+                            return true;
+                        } else {
+                            alert("Error occurs on the Database level!");
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        alert("An error has occured!!!");
                         return false;
                     }
-                },
-                error: function () {
-                    alert("An error has occured!!!");
-                    return false;
-                }
-            });
-        }
-        else {
-            return false;
+                });
+            }
+            else {
+                return false;
+            }
         }
 
-    }
 </script>

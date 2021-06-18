@@ -1,0 +1,104 @@
+﻿@model CMSSample.DomainModel.ViewModels.TaskEditViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.UserId)
+    @Html.HiddenFor(m => m.ODZCaseID)
+    @Html.HiddenFor(m => m.CompletedDate)
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <center><h3> Create Task </h3> </center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.TaskTypes, htmlAttributes: null)
+                                <div class="form-group">
+                                    @Html.DropDownListFor(model => model.TaskTypeId, new SelectList(Model.TaskTypes, "Value", "Text"), new { htmlAttributes = new { @class = "form-control-sm" } })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.TaskDescription, htmlAttributes: null)
+                                <div class="form-group">
+                                    @Html.TextAreaFor(model => model.TaskDescription, new { rows = "4", cols = "28" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="display:none">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.CreatedDate, htmlAttributes: null)
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.CreatedDate, null)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    @Html.ValidationSummary(false, "Please fix the following errors and submit the form:", new { @class = "text-danger" })
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center>
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                </center>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+<!-- Code to wire up your DatePicker -->
+<script type="text/javascript">
+    //$(function () {
+    //    // This will make every element with the class "date-picker" into a DatePicker element
+    //    $('.datepicker').datepicker();
+    //    $('.datepicker').datepicker('setDate', 'today');
+    //})
+
+    //$(document).ready(function () {
+    //    $(".datepicker").datepicker({
+
+    //        dateFormat: "dd-mm-yy"
+
+    //    });
+
+    //    $('.datepicker').datepicker('setDate', 'today');
+    //});
+</script>

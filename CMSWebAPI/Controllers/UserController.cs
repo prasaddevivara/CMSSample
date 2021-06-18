@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace CMSWebAPI.Controllers
 {
+    
     public class UserController : ApiController
     {
         private readonly IUserRepository _repository;
@@ -24,6 +25,7 @@ namespace CMSWebAPI.Controllers
             _dzrepository = dzrepository;
         }
 
+        [CustomAuthenticationFilter(Roles = "Admin")]
         public IEnumerable<UserDisplayViewModel> Get()
         {
             try
@@ -35,7 +37,7 @@ namespace CMSWebAPI.Controllers
                 throw ex;
             }
         }
-
+        [CustomAuthenticationFilter(Roles = "Admin")]
         [Route("api/User/Edit")]
         public UserEditViewModel GetUserByEdit()
         {
@@ -48,6 +50,7 @@ namespace CMSWebAPI.Controllers
             return usrs;
         }
 
+        [CustomAuthenticationFilter(Roles = "Admin")]
         [Route("api/User/{id}")]
         //[CustomAuthenticationFilter]
         public UserEditViewModel GetUserByID(int id)
@@ -55,7 +58,7 @@ namespace CMSWebAPI.Controllers
             return _repository.GetUserByID(id);
         }
 
-
+        [CustomAuthenticationFilter(Roles = "Admin, User")]
         [Route("api/User/{UserName}/ByUserName")]
         public UserDisplayViewModel GetUserByUserName(string UserName)
         {
@@ -63,6 +66,7 @@ namespace CMSWebAPI.Controllers
             //return _repository.GetUsers().Where(x => x.UserName == UserName).ToList();
         }
 
+        [CustomAuthenticationFilter(Roles = "Admin")]
         [HttpPut]
         //[CustomAuthenticationFilter]
         public void UpdateUser(UserEditViewModel user)
@@ -83,13 +87,14 @@ namespace CMSWebAPI.Controllers
         }
 
 
-        //[CustomAuthenticationFilter]
+        [CustomAuthenticationFilter(Roles = "Admin")]
         [HttpDelete, Route("api/User/{id}/UserRemove")]
         public void Delete(int id)
         {
             _repository.Delete(id);
         }
 
+        [CustomAuthenticationFilter(Roles = "Admin")]
         [HttpPost]
         public void PostUsers(UserEditViewModel user)
         {

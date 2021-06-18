@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My ASP.NET Application</title>
 
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
+
     <link href="~/fonts/font-awesome.min.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
     <link href="~/css/style.css" rel="stylesheet" />
 </head>
 <body>
@@ -42,7 +44,7 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
-            
+
             <h1><a class="logo">CMS Project</a></h1>
             <ul class="list-unstyled components mb-5">
                 <li class="active">
@@ -54,15 +56,15 @@
                 <li>
                     <a href="@Url.Action("Index", "ODZCase", null)"><span class="fa fa-sticky-note mr-3"></span> Case Management</a>
                 </li>
-                @* <li>
-                    <a href="@Url.Action("Index", "ODZCaseSearch", null)"><span class="fa fa-sticky-note mr-3"></span> Case Search</a>
-                </li>
                 <li>
-            <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
-        </li>
-        <li>
-            <a href="#"><span class="fa fa-paper-plane mr-3"></span> Information</a>
-        </li>*@
+                    <a href="@Url.Action("Index", "Task", null)"><span class="fa fa-sticky-note mr-3"></span> Tasks</a>
+                </li>
+                @*  <li>
+                        <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="fa fa-paper-plane mr-3"></span> Information</a>
+                    </li>*@
                 <li>
                     <a href="@Url.Action("Logout", "HomeDisp", null)"><span class="fa fa-paper-plane mr-3"></span> Logout</a>
                 </li>
@@ -77,14 +79,14 @@
                 <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
             </footer>
         </div>
-        </div>
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-        <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/popper.js"></script>
-        <script src="~/Scripts/main.js"></script>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/Scripts/jquery-3.4.1.min.js")
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/main.js"></script>
 
 </body>
 </html>

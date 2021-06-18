@@ -1,0 +1,143 @@
+﻿@model IEnumerable<CMSSample.DomainModel.ViewModels.TaskDisplayViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Task Details</h2>
+
+
+<div class="table-responsive">
+    <table class="table table-bordered  table-responsive-sm table-hover">
+        <tr>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.TaskTypeName)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.TaskDescription)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.ODZCaseReference)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.CompletedDate)
+            </th>
+            <th style="text-align:center;background-color:lightblue">
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th style="text-align:center;background-color:lightblue"></th>
+        </tr>
+
+        @foreach (var item in Model)
+        { 
+            <tr>
+                <td style="display:none" class="UserId"> @Html.DisplayFor(modelItem => item.UserId) </td>
+                <td style="display:none" class="ODZCaseID">@Html.DisplayFor(modelItem => item.ODZCaseID) </td>
+                <td style="display:none" class="TaskTypeId">@Html.DisplayFor(modelItem => item.TaskTypeId) </td>
+                <td style="display:none" class="TaskId">@Html.DisplayFor(modelItem => item.TaskId) </td>
+                <td style="width:120px" class="TaskTypeName">
+                    @Html.DisplayFor(modelItem => item.TaskTypeName)
+                </td>
+                <td style="width:100px" class="TaskDescription">
+                    @Html.DisplayFor(modelItem => item.TaskDescription)
+                </td>
+                <td style="width:50px" class="ODZCaseReference">
+                    @Html.DisplayFor(modelItem => item.ODZCaseReference)
+                </td>
+                <td style="width:150px" class="CreatedDate">
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td style="width:100px" class="CompletedDate">
+                    @Html.DisplayFor(modelItem => item.CompletedDate)
+                </td>
+                <td style="width:50px" class="UserName">
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td style="width:140px">
+                    @Html.ActionLink("Edit |", "Edit", new { id = item.TaskId }, null)
+
+                    @if (string.IsNullOrEmpty(item.CompletedDate))
+                    {
+                        <a class="lnkUpdateTsk" onclick="funcUpdatetsk()" href="">Close |</a>
+
+                    }
+
+                    <a onclick="DeleteTask(@item.TaskId)" href="">Delete</a>
+
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<script type="text/javascript">
+
+ 
+    $(".lnkUpdateTsk").on("click", function () {      
+            var data = {
+                TaskDescription: $(this).closest('tr').find('.TaskDescription').text().trim(),
+                CreatedDate: $(this).closest('tr').find('.CreatedDate').text(),
+                UserName: $(this).closest('tr').find('.UserName').text(),
+                UserId: $(this).closest('tr').find('.UserId').text(),
+                ODZCaseID: $(this).closest('tr').find('.ODZCaseID').text(),
+                TaskTypeId: $(this).closest('tr').find('.TaskTypeId').text(),
+                TaskId: $(this).closest('tr').find('.TaskId').text()
+            };        
+
+            $.ajax({
+                type: "POST",
+                url: 'http://localhost/CMSSample.WebApp/Task/TaskClose',
+                async: false,
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.status == "Success") {
+                        alert(data.message);
+                        return true;
+                    } else {
+                        alert("Error occurs on the Database level!");
+                        return false;
+                    }
+                },
+                error: function () {
+                    alert("An error has occured!!!");
+                    return false;
+                }
+            });
+    })
+
+
+
+        function DeleteTask(id) {
+            if (confirm("Are you sure to delete Task?")) {
+                $.ajax({
+                    type: "POST",
+                    url: 'http://localhost/CMSSample.WebApp/Task/Delete',
+                    async: false,
+                    data: JSON.stringify({ 'Id': id }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        if (data.status == "Success") {
+                            alert(data.message);
+                            return true;
+                        } else {
+                            alert("Error occurs on the Database level!");
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        alert("An error has occured!!!");
+                        return false;
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        }
+</script>

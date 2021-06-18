@@ -93,8 +93,6 @@ namespace CMSSample.DA.Repository
 
         public UserEditViewModel GetUserByID(int userid)
         {
-            //return _context.User.Find(UserId);
-
             var userroleRepo = new UserRolesRepository(_context);
             var dzRepo = new DZRepository(_context);
             var usr = _context.User.Where(x => x.UserId == userid).FirstOrDefault();
@@ -111,16 +109,7 @@ namespace CMSSample.DA.Repository
                 Mobile = usr.Mobile,
                 RoleID = usr.RoleID,
                 UserRoles = userroleRepo.GetAllUserRoles()
-                //ODZCaseReference = odzc.ODZCaseReference,
-                //IncidentTypeID = odzc.IncidentTypeID.ToString(),
-                //IncidentTypes = incRepo.GetIncidentTypes(),
-                //SelectedCountryofIncidentID = odzc.CountryofIncidentID,
-                //DZS = dzRepo.GetDZs(),
-                //CaseCoverageAmount = odzc.CaseCoverageAmount,
-                //AssistedPerson = odzc.AssistedPerson,
-                //CaseDescription = odzc.CaseDescription
-            };
-            //return _context.ODZCase.Where(x => x.ODZCaseID == odzcID).FirstOrDefault();
+            };           
             return useredt;
         }
 
@@ -135,6 +124,7 @@ namespace CMSSample.DA.Repository
                     .FirstOrDefault();
                 var usrdisp = new UserDisplayViewModel
                 {
+                    UserId = usr.UserId,
                     UserName = usr.UserName,
                     DZName = usr.DZ.DZName,
                     FirstName = usr.FirstName,

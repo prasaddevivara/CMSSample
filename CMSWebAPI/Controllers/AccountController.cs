@@ -22,16 +22,14 @@ namespace CMSWebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage ValidLogin(string UserName, string UserPassword)
         {            
-            List<UserDisplayViewModel> usr = new List<UserDisplayViewModel>();
-            usr = _repository.GetUsers().Where(x => x.UserName == UserName && x.Password == UserPassword).ToList();
+            UserDisplayViewModel usr = new UserDisplayViewModel();
+            usr = _repository.GetUsers().Where(x => x.UserName == UserName && x.Password == UserPassword).FirstOrDefault();
 
-            if (usr.Count() > 0)
+            if (usr != null)
             {
-                //if (usr == "admin" && userPassword == "Admin")
-                //{
-                    return Request.CreateResponse(HttpStatusCode.OK, value: TokenManager.GenerateToken(UserName));
-                //}
+               return Request.CreateResponse(HttpStatusCode.OK, value: TokenManager.GenerateToken(UserName,usr.RoleName));
             }
+
             return Request.CreateErrorResponse(HttpStatusCode.BadGateway, message: "User name and password is invalid");
         }
 

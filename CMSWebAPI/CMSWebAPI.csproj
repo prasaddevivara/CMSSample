@@ -177,6 +177,7 @@
     <Compile Include="Controllers\DZController.cs" />
     <Compile Include="Controllers\IncidentTypeController.cs" />
     <Compile Include="Controllers\ODZCaseController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAuthenticationFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -198,6 +199,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Task\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CMSSample.DA\CMSSample.DA.csproj">

@@ -11,15 +11,15 @@ namespace CMSSample.DomainModel.ViewModels
     {
         public int ODZCaseID { get; set; }
 
-        [Display(Name = "Case Rerence Number")]
+        [Display(Name = "Reference Number")]
         public int ODZCaseReference { get; set; }
 
-        [Display(Name = "IncidentType Name")]
+        [Display(Name = "IncidentType")]
         public string IncidentTypeName { get; set; }
 
-        [Display(Name = "Country Of Incident")]
+        [Display(Name = "Incident Country")]
         public string DZName { get; set; } // LDZID
-        [Display(Name = "Case Coverage Amount")]
+        [Display(Name = "Coverage Amount")]
         public int CaseCoverageAmount { get; set; }
 
         [Display(Name = "Assisted Person")]
