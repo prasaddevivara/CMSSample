@@ -89,6 +89,10 @@
     <Compile Include="Migrations\202106150724539_Initial_Migration_15062021.designer.cs">
       <DependentUpon>202106150724539_Initial_Migration_15062021.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202106211120448_21062021_Migration.cs" />
+    <Compile Include="Migrations\202106211120448_21062021_Migration.designer.cs">
+      <DependentUpon>202106211120448_21062021_Migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repository\DZRepository.cs" />
     <Compile Include="Repository\IDZRepository.cs" />
@@ -125,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202106150724539_Initial_Migration_15062021.resx">
       <DependentUpon>202106150724539_Initial_Migration_15062021.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202106211120448_21062021_Migration.resx">
+      <DependentUpon>202106211120448_21062021_Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -11,72 +11,82 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>ODZCaseEditViewModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group" style="display:none">
-            @Html.LabelFor(model => model.ODZCaseID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ODZCaseID, new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.ODZCaseID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ODZCaseReference, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ODZCaseReference, new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.ODZCaseReference, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IncidentTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.IncidentTypeID, new SelectList(Model.IncidentTypes, "Value", "Text"), new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.IncidentTypeID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SelectedCountryofIncidentID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.SelectedCountryofIncidentID, new SelectList(Model.DZS, "Value", "Text"), new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.SelectedCountryofIncidentID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CaseCoverageAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CaseCoverageAmount, new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.CaseCoverageAmount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AssistedPerson, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AssistedPerson, new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.AssistedPerson, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CaseDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CaseDescription, new { htmlAttributes = new { @class = "form-control-sm" } })
-                @Html.ValidationMessageFor(model => model.CaseDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+<div class="form-horizontal">
+    <h4>ODZCaseEditViewModel</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group" style="display:none">
+        @Html.LabelFor(model => model.ODZCaseID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ODZCaseID, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.ODZCaseID, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group" style="display:none">
+        @Html.LabelFor(model => model.CaseCreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CaseCreationDate, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.CaseCreationDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ODZCaseReference, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ODZCaseReference, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.ODZCaseReference, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IncidentTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.IncidentTypeID, new SelectList(Model.IncidentTypes, "Value", "Text"), new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.IncidentTypeID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedCountryofIncidentID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.SelectedCountryofIncidentID, new SelectList(Model.DZS, "Value", "Text"), new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.SelectedCountryofIncidentID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CaseCoverageAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CaseCoverageAmount, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.CaseCoverageAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AssistedPerson, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AssistedPerson, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.AssistedPerson, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CaseDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.CaseDescription, new { htmlAttributes = new { @class = "form-control-sm" } })
+            @Html.ValidationMessageFor(model => model.CaseDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

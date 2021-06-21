@@ -18,6 +18,11 @@ namespace CMSSample.DA.Repository
         void InsertODZCase(ODZCase odzcase);
         void Delete(Object ODZCaseID);
         void UpdateODZCase(ODZCase odzcase);
+
+        void UpdateODZCaseValidation(ODZCase odzcase);
+
+        void UpdateODZCaseClose(ODZCase odzcase);
+
         void Save();
     }
 }

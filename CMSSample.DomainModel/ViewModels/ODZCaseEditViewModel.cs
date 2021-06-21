@@ -31,6 +31,9 @@ namespace CMSSample.DomainModel.ViewModels
         public string AssistedPerson { get; set; }
 
         public string CaseDescription { get; set; }
-        
+
+        public DateTime CaseCreationDate { get; set; }
+
+
     }
 }

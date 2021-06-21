@@ -1,0 +1,154 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm("Index", " ODZCValidate", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div id="tabs" style="width:700px;height:300px">
+            <ul>
+                <li><a href="#tabs-1">Invoice Uplload</a></li>
+                <li><a href="#tabs-2">Case Validation</a></li>
+                <li><a href="#tabs-3">Case Close</a></li>
+            </ul>
+
+            <div id="tabs-1">
+                <div>
+                    <input type="file" id="FileUpload1" />
+                </div>
+                <div style="height:50px"></div>
+                <div>
+                    <input type="button" id="btnUpload" value="Upload Invoice" class="btn btn-primary" />
+                </div>
+            </div>
+
+            <div id="tabs-2">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.Label("Validation Description:", htmlAttributes: null)
+                        <div class="form-group">
+                            @Html.TextArea("Validation Description", new { rows = "4", cols = "28", id = "ValidateDesc" })
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <input type="button" id="btnValidate" value="Validate" class="btn btn-primary" />
+                </div>
+            </div>
+            <div id="tabs-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.Label("Case Close Description:", htmlAttributes: null)
+                        <div class="form-group">
+                            @Html.TextArea("Case Close Descriptio", new { rows = "4", cols = "28", id = "CloseDesc" })
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <input type="button" id="btnCaseClose" value="Close Case" class="btn btn-primary" />
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <input type="hidden" id="selectedTab" name="selectedTab" value="@ViewBag.SelectedTab" />        
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            $("#tabs").tabs();
+        });
+
+
+        $(document).ready(function () {
+            $('#btnUpload').click(function () {
+
+                // Checking whether FormData is available in browser  
+                if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#FileUpload1").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object  
+                    var fileData = new FormData();
+
+                    // Looping over all files and add it to FormData object  
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    // Adding one more key to FormData object  
+                    fileData.append('username', "Manas");
+
+                    $.ajax({
+                        url: 'http://localhost/CMSSample.WebApp/ODZCValidate/Index',
+                        type: "POST",
+                        contentType: false, // Not to set any content header  
+                        processData: false, // Not to process data  
+                        data: fileData,
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                } else {
+                    alert("FormData is not supported.");
+                }
+            });
+        });
+
+        $('#btnValidate').click(function () {
+            
+            var validatedesc = $("#ValidateDesc").val();          
+
+            if (validatedesc != "") {
+                $.ajax({
+                    url: 'http://localhost/CMSSample.WebApp/ODZCValidate/ValidateCase',
+                    type: "POST",  
+                    data: { validateDesc: $("#ValidateDesc").val() },
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("Please enter validation description.");
+            }
+        });
+
+        $('#btnCaseClose').click(function () {
+
+            var caseclosedesc = $("#CloseDesc").val();
+
+            if (caseclosedesc != "") {
+                $.ajax({
+                    url: 'http://localhost/CMSSample.WebApp/ODZCValidate/CaseClose',
+                    type: "POST",  
+                    data: { caseCloseDesc: $("#CloseDesc").val() },
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("Please enter Case Close description.");
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -17,12 +17,14 @@ namespace CMSWebAPI.Controllers
         private readonly IODZCaseRepository _repository;
         private readonly IIncidentTypeRepository _inctyprepository;
         private readonly IDZRepository _dzrepository;
+        private readonly IUserRepository _userrepository;
 
-        public ODZCaseController(IODZCaseRepository repository, IIncidentTypeRepository inctyprepository, IDZRepository dzrepository)
+        public ODZCaseController(IODZCaseRepository repository, IIncidentTypeRepository inctyprepository, IDZRepository dzrepository, IUserRepository userrepository)
         {
             _repository = repository;
             _inctyprepository = inctyprepository;
             _dzrepository = dzrepository;
+            _userrepository = userrepository;
         }
 
            
@@ -60,14 +62,50 @@ namespace CMSWebAPI.Controllers
                 ODZCaseReference = odzcase.ODZCaseReference,
                 IncidentTypeID = Convert.ToInt32(odzcase.IncidentTypeID),
                 CountryofIncidentID = odzcase.SelectedCountryofIncidentID,
-                // IncidentTypes = _inctyprepository.GetIncidentTypes(),
+                CaseCreationDate = Convert.ToDateTime(odzcase.CaseCreationDate),
                 CaseCoverageAmount = odzcase.CaseCoverageAmount,
                 AssistedPerson = odzcase.AssistedPerson,
                 CaseDescription = odzcase.CaseDescription
             };
             _repository.UpdateODZCase(odzcupd);
         }
-               
+
+
+
+        [HttpPut, Route("api/ODZCase/{userName}")]
+        public void PutCaseValidate([FromUri] string userName, [FromBody] ODZCaseValidateViewModel odzcasevalidatevm)
+        {
+            var user = new UserDisplayViewModel();
+            user = _userrepository.GetUserByUserName(userName);
+
+            var odzcase = new ODZCase()
+            {
+                ODZCaseID = odzcasevalidatevm.ODZCaseID,
+                ValidationDate = DateTime.Now,
+                ValidationDesc = odzcasevalidatevm.ValidationDesc,
+                ValidatedByUser = user.UserId
+            };
+
+            _repository.UpdateODZCaseValidation(odzcase);
+        }
+
+        [HttpPut, Route("api/ODZCase/{userName}/CaseClose")]
+        public void PutCaseCloser([FromUri] string userName, [FromBody] ODZCaseCloseViewModel odzcaseclosevm)
+        {
+            var user = new UserDisplayViewModel();
+            user = _userrepository.GetUserByUserName(userName);
+
+            var odzcase = new ODZCase()
+            {
+                ODZCaseID = odzcaseclosevm.ODZCaseID,
+                ClosedByDate = DateTime.Now,
+                ClosingDesc = odzcaseclosevm.ClosingDesc,
+                ClosedByuser = user.UserId
+            };
+
+            _repository.UpdateODZCaseClose(odzcase);
+        }
+
         [HttpDelete, Route("api/ODZCase/{id}/CaseRemove")]
         public void DeleteODZCaseByID(int id)
         {
@@ -81,8 +119,7 @@ namespace CMSWebAPI.Controllers
             {
                 ODZCaseReference = odzcase.ODZCaseReference,
                 IncidentTypeID = Convert.ToInt32(odzcase.IncidentTypeID),
-                CountryofIncidentID = odzcase.SelectedCountryofIncidentID,
-               // IncidentTypes = _inctyprepository.GetIncidentTypes(),
+                CountryofIncidentID = odzcase.SelectedCountryofIncidentID,               
                 CaseCoverageAmount = odzcase.CaseCoverageAmount,
                 AssistedPerson = odzcase.AssistedPerson,
                 CaseDescription = odzcase.CaseDescription                

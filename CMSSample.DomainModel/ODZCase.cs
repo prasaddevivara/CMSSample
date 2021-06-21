@@ -25,6 +25,20 @@ namespace CMSSample.DomainModel
 
         public string CaseDescription { get; set; }
 
+        public DateTime CaseCreationDate { get; set; }
+
+        public int? ValidatedByUser { get; set; }
+
+        public DateTime? ValidationDate { get; set; }
+
+        public string ValidationDesc { get; set; }
+
+        public int? ClosedByuser { get; set; }
+
+        public DateTime? ClosedByDate { get; set; }
+
+        public string ClosingDesc { get; set; }
+
         public virtual IncidentType IncidentType { get; set; }
 
         public virtual DZ DZ { get; set; }

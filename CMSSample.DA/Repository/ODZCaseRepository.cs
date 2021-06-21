@@ -104,7 +104,8 @@ namespace CMSSample.DA.Repository
                 DZS = dzRepo.GetDZs(),
                 CaseCoverageAmount = odzc.CaseCoverageAmount,
                 AssistedPerson = odzc.AssistedPerson,
-                CaseDescription = odzc.CaseDescription
+                CaseDescription = odzc.CaseDescription,
+                CaseCreationDate = odzc.CaseCreationDate
             };
             //return _context.ODZCase.Where(x => x.ODZCaseID == odzcID).FirstOrDefault();
             return odzcase;
@@ -112,15 +113,37 @@ namespace CMSSample.DA.Repository
 
         public void InsertODZCase(ODZCase odzcase)
         {
+            odzcase.CaseCreationDate = DateTime.Now;
             _context.ODZCase.Add(odzcase);
             Save();
         }
 
         public void UpdateODZCase(ODZCase odzcase)
-        {
+        {            
             _context.Entry(odzcase).State = EntityState.Modified;
             Save();
         }
+
+        public void UpdateODZCaseValidation(ODZCase odzcase)
+        {
+            _context.ODZCase.Attach(odzcase);
+            _context.Entry(odzcase).Property(x => x.ValidationDate).IsModified = true;
+            _context.Entry(odzcase).Property(x => x.ValidationDesc).IsModified = true;
+            _context.Entry(odzcase).Property(x => x.ValidatedByUser).IsModified = true;
+            _context.SaveChanges();
+        }
+
+        public void UpdateODZCaseClose(ODZCase odzcase)
+        {
+            _context.ODZCase.Attach(odzcase);
+            _context.Entry(odzcase).Property(x => x.ClosedByDate).IsModified = true;
+            _context.Entry(odzcase).Property(x => x.ClosingDesc).IsModified = true;
+            _context.Entry(odzcase).Property(x => x.ClosedByuser).IsModified = true;
+            _context.SaveChanges();
+        }
+
+
+        
 
         public void Delete(object odzcaseID)
         {
