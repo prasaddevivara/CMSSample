@@ -33,9 +33,9 @@
                                     <div style="display:none">
                                         @Html.EditorFor(model => model.ODZCaseID, null)
                                         @Html.EditorFor(model => model.CaseCreationDate, null)
-                                        @Html.EditorFor(model => model.ODZCaseReference, null)
+                                        
                                     </div>
-                                    @Html.EditorFor(model => model.ODZCaseReference, new { htmlAttributes = new { @class = "form-control-sm", disabled = "disabled" } })
+                                    @Html.EditorFor(model => model.ODZCaseReference, new { htmlAttributes = new { @class = "form-control-sm", @readonly = "readonly" } })
                                 </div>
 
                             </div>
