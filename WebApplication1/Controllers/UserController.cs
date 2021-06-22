@@ -92,7 +92,8 @@ namespace WebApplication1.Controllers
                     {
                         var readJob = result.Content.ReadAsAsync<UserEditViewModel>();
                         readJob.Wait();
-                        usrs = readJob.Result;                        
+                        usrs = readJob.Result;
+                        TempData["UserEditVM"] = usrs;
                         return View(usrs);
                     }
                     else
@@ -114,30 +115,39 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Create(UserEditViewModel usereditviewmodel)
         {
+            UserEditViewModel usreditvm = null;
             try
             {
-                using (var client = new HttpClient())
+                if (ModelState.IsValid)
                 {
-                    CommonHttpProps(client);
-                    var responseTask = client.PostAsJsonAsync<UserEditViewModel>("User", usereditviewmodel);
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        return RedirectToAction("Index", "User");
-                    }
-                }
-                ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
-                logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
+                        CommonHttpProps(client);
+                        var responseTask = client.PostAsJsonAsync<UserEditViewModel>("User", usereditviewmodel);
+                        responseTask.Wait();
 
-                return View();
+                        var result = responseTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            return RedirectToAction("Index", "User");
+                        }
+                    }
+                    ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+                    logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
+                }                
+
+                if (TempData.ContainsKey("UserEditVM"))
+                    usreditvm = (UserEditViewModel)TempData["UserEditVM"];
+
+                TempData.Keep("UserEditVM");
+
+                return View(usreditvm);
             }
             catch (Exception ex)
             {
                 logger.Error(DateTime.Now + ": " + ex.Message);
                 logger.Error(DateTime.Now + ": " + ex.StackTrace);
-                return View();
+                return View(usreditvm);
             }
         }
 

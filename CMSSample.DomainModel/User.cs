@@ -40,14 +40,12 @@ namespace CMSSample.DomainModel
         [Display(Name = "Mobile")]
         [StringLength(50)]
         public string Mobile { get; set; }
-
-        [Required]
+                
         public int DZId { get; set; }
-
+                
         [ForeignKey("DZId")]
         public virtual DZ DZ { get; set; }
-
-        [Required]
+                
         public int RoleID { get; set; }
 
         public virtual UserRoles UserRoles { get; set; }
