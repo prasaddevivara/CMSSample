@@ -2,8 +2,10 @@
 using CMSSample.DA.Repository;
 using CMSSample.DomainModel;
 using CMSSample.DomainModel.ViewModels;
+using CMSWebAPI.ExceptionHandling;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -51,8 +53,7 @@ namespace CMSWebAPI.Controllers
         }
 
         [CustomAuthenticationFilter(Roles = "Admin")]
-        [Route("api/User/{id}")]
-        //[CustomAuthenticationFilter]
+        [Route("api/User/{id}")]       
         public UserEditViewModel GetUserByID(int id)
         {
             return _repository.GetUserByID(id);
@@ -62,13 +63,11 @@ namespace CMSWebAPI.Controllers
         [Route("api/User/{UserName}/ByUserName")]
         public UserDisplayViewModel GetUserByUserName(string UserName)
         {
-            return _repository.GetUserByUserName(UserName);
-            //return _repository.GetUsers().Where(x => x.UserName == UserName).ToList();
+            return _repository.GetUserByUserName(UserName);            
         }
 
         [CustomAuthenticationFilter(Roles = "Admin")]
-        [HttpPut]
-        //[CustomAuthenticationFilter]
+        [HttpPut]        
         public void UpdateUser(UserEditViewModel user)
         {
             var usr = new User()
@@ -86,31 +85,65 @@ namespace CMSWebAPI.Controllers
             _repository.UpdateUser(usr);
         }
 
-
         [CustomAuthenticationFilter(Roles = "Admin")]
-        [HttpDelete, Route("api/User/{id}/UserRemove")]
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
-        }
-
-        [CustomAuthenticationFilter(Roles = "Admin")]
-        [HttpPost]
-        public void PostUsers(UserEditViewModel user)
+        [HttpPut, Route("api/User/{id}/UserRemove")]
+        public void PutUserRemove([FromUri] int id, [FromBody] UserDeleteViewModel userdeletevm)
         {
             var usr = new User()
             {
-                UserName = user.UserName,
-                Password = user.Password,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Mobile = user.Mobile,
-                DZId = Convert.ToInt32(user.DZId),
-                RoleID = Convert.ToInt32(user.RoleID)
+                UserId = id,
+                IsDeleted = true,
+                DeletedAt = DateTime.Now
             };
-                       
-            _repository.InsertUser(usr);
+
+            _repository.UpdateSoftDelete(usr);
+        }
+
+        [HttpPut, Route("api/User/{userName}/ChangePassword")]
+        public void PutChangePassword([FromUri] string userName, [FromBody] ChangePasswordViewModel changepasswordvm)
+        {
+            var usr = new UserDisplayViewModel();
+            usr = _repository.GetUserByUserName(userName);
+
+            var user = new User()
+            {
+                UserId = usr.UserId,
+               // UserName = userName,
+               Password = changepasswordvm.Password
+            };
+
+             _repository.UpdatePassword(user);
+        }
+
+        [CustomAuthenticationFilter(Roles = "Admin")]
+        [CustomExceptionFilter]
+        [HttpPost]
+        public HttpResponseMessage PostUsers(UserEditViewModel user)
+        {
+                var usr = new User()
+                {
+                    UserName = user.UserName,
+                    Password = user.Password,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Mobile = user.Mobile,
+                    DZId = Convert.ToInt32(user.DZId),
+                    CreationDate= DateTime.Now,
+                    RoleID = Convert.ToInt32(user.RoleID)
+                };
+
+                _repository.InsertUser(usr);
+
+                return Request.CreateResponse<UserEditViewModel>(HttpStatusCode.OK, user);
+        }
+
+        HttpResponseMessage TraceErrorAndReturnResponse(string message, HttpStatusCode statusCode)
+        {
+            Trace.TraceError(Request.Headers.ToString());
+            Trace.TraceError(message);
+
+            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
         }
     }
 }

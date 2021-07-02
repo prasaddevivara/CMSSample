@@ -7,9 +7,11 @@ using System.Web.Mvc;
 using CMSSample.DomainModel.ViewModels;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using WebApplication1.Common;
 
 namespace WebApplication1.Controllers
 {
+    [NoDirectAccess]
     public class TaskController : Controller
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -79,6 +81,7 @@ namespace WebApplication1.Controllers
                         var readJob = result.Content.ReadAsAsync<TaskEditViewModel>();
                         readJob.Wait();
                         tsks = readJob.Result;
+                        TempData["tsksVM"] = tsks;
                         return View(tsks);
                     }
                     else
@@ -100,20 +103,32 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult TaskClose(TaskEditViewModel taskeditviewmodel)
         {
+            TaskEditViewModel tskeditvm = null;
+
             try
-            {               
-                using (var client = new HttpClient())
+            {
+                if (ModelState.IsValid)
                 {
-                    taskeditviewmodel.CompletedDate = DateTime.Now;
-                    CommonHttpProps(client);
-                    HttpResponseMessage response = client.PutAsJsonAsync("Task", taskeditviewmodel).Result;                   
-                    if (response.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        return Json(new { status = "Success", message = "Task Closed Succesfully!" });                        
+                        taskeditviewmodel.CompletedDate = DateTime.Now;
+                        CommonHttpProps(client);
+                        HttpResponseMessage response = client.PutAsJsonAsync("Task", taskeditviewmodel).Result;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            return Json(new { status = "Success", message = "Task Closed Succesfully!" });
+                        }
                     }
+                    ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+                    logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
                 }
-                ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
-                logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
+
+                if (TempData.ContainsKey("tsksVM"))
+                    tskeditvm = (TaskEditViewModel)TempData["tsksVM"];
+
+                TempData.Keep("tsksVM");
+
+                return View(tskeditvm);
 
                 return RedirectToAction("Index","Task");
             }

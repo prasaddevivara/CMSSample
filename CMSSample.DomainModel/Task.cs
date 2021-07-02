@@ -30,7 +30,10 @@ namespace CMSSample.DomainModel
         [Display(Name = "CreatedUser")]
         public int UserId { get; set; }
 
-        
+        public bool? IsDeleted { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
+
         public virtual User User { get; set;}
        
         public virtual ODZCase ODZCase { get; set; }

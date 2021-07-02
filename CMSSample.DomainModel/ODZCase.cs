@@ -39,6 +39,10 @@ namespace CMSSample.DomainModel
 
         public string ClosingDesc { get; set; }
 
+        public bool? IsDeleted { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
+
         public virtual IncidentType IncidentType { get; set; }
 
         public virtual DZ DZ { get; set; }

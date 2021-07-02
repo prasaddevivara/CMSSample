@@ -16,6 +16,7 @@ namespace CMSSample.DomainModel
         [Required]
         [Display(Name = "UserName")]
         [StringLength(100)]
+        [Index(IsUnique = true)]        
         public string UserName { get; set; }
 
         [Required]
@@ -45,8 +46,14 @@ namespace CMSSample.DomainModel
                 
         [ForeignKey("DZId")]
         public virtual DZ DZ { get; set; }
-                
+
+        public DateTime CreationDate { get; set; }
+
         public int RoleID { get; set; }
+
+        public bool? IsDeleted { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
 
         public virtual UserRoles UserRoles { get; set; }
 

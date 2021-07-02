@@ -6,9 +6,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication1.Common;
 
 namespace WebApplication1.Controllers
 {
+    [NoDirectAccess]
     public class HomeDispController : Controller
     {
         private static string WebAPIURL = "http://localhost/CMSWebAPI/api/";

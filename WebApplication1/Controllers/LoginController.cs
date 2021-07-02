@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication1.Common;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -36,7 +37,9 @@ namespace WebApplication1.Controllers
                         client.DefaultRequestHeaders.Clear();
                         client.BaseAddress = new Uri("http://localhost/CMSWebAPI/api/");
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
-                        var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?UserName=" + usr.UserName + "&UserPassword=" + usr.Password);
+                        string encrptedPwd = PwdEncrAndDecr.Encrypt(usr.Password);
+                        encrptedPwd = Server.UrlEncode(encrptedPwd);
+                        var responseMessage = await client.GetAsync(requestUri: "Account/ValidLogin?UserName=" + usr.UserName + "&UserPassword=" + encrptedPwd);
 
                         if (responseMessage.IsSuccessStatusCode)
                         {

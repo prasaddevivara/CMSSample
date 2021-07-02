@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 using CMSSample.DomainModel.ViewModels;
 using NLog;
 using System.Net.Http.Headers;
+using WebApplication1.Common;
 
 namespace WebApplication1.Controllers
 {
+    [NoDirectAccess]
     public class ODZCaseController : Controller
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -96,7 +98,7 @@ namespace WebApplication1.Controllers
                         var readJob = result.Content.ReadAsAsync<ODZCaseEditViewModel>();
                         readJob.Wait();
                         odzc = readJob.Result;
-                        // ViewBag.DZ = new SelectList(dz.ToList(), "DZId", "DZName");
+                        TempData["odzcEditVM"] = odzc;
                         return View(odzc);
                     }
                     else
@@ -119,29 +121,38 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Create(ODZCaseEditViewModel odzcaseEditViewModel)
         {
+            ODZCaseEditViewModel odzceditvm = null;
             try
             {
-                using (var client = new HttpClient())
+                if (ModelState.IsValid)
                 {
-                    CommonHttpProps(client);
-                    var responseTask = client.PostAsJsonAsync<ODZCaseEditViewModel>("ODZCase", odzcaseEditViewModel);
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        return RedirectToAction("Index");
-                    }
-                }
-                ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+                        CommonHttpProps(client);
+                        var responseTask = client.PostAsJsonAsync<ODZCaseEditViewModel>("ODZCase", odzcaseEditViewModel);
+                        responseTask.Wait();
 
-                return View(odzcaseEditViewModel);
+                        var result = responseTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                    }
+                    ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
+                }
+
+                if (TempData.ContainsKey("odzcEditVM"))
+                    odzceditvm = (ODZCaseEditViewModel)TempData["odzcEditVM"];
+
+                TempData.Keep("odzcEditVM");
+
+                return View(odzceditvm);
             }
             catch (Exception ex)
             {
                 logger.Error(DateTime.Now + ": " + ex.Message);
                 logger.Error(DateTime.Now + ": " + ex.StackTrace);
-                return View(odzcaseEditViewModel);
+                return View(odzceditvm);
             }
         }
 

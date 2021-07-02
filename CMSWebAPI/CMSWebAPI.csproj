@@ -180,6 +180,7 @@
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAuthenticationFilter.cs" />
+    <Compile Include="ExceptionHandling\CustomExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

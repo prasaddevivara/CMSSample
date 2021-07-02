@@ -185,7 +185,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Common\NoDirectAccessAttribute.cs" />
+    <Compile Include="Common\PwdEncrAndDecr.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChangePasswordController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeDispController.cs" />
@@ -371,6 +373,7 @@
     <Content Include="Views\Task\Create.cshtml" />
     <Content Include="Views\Task\Edit.cshtml" />
     <Content Include="Views\ODZCValidate\Index.cshtml" />
+    <Content Include="Views\ChangePassword\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -20,7 +20,14 @@ namespace CMSSample.DA.Repository
 
         public void Save()
         {
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
         private bool disposed = false;
@@ -45,13 +52,13 @@ namespace CMSSample.DA.Repository
 
         public IEnumerable<UserDisplayViewModel> GetUsers()
         {
-            using (_context)
-            {
+            //using (_context)
+            //{
                 List<User> users = new List<User>();
                 users = _context.User.AsNoTracking()
                     .Include(x => x.UserRoles)
                     .Include(x => x.DZ)
-                    .ToList();
+                    .Where(a => a.IsDeleted != true).ToList();
 
                 if (users != null)
                 {
@@ -75,7 +82,15 @@ namespace CMSSample.DA.Repository
                     return usersDisplay;
                 }
                 return null;
-            }
+            //}
+        }
+
+        public void UpdatePassword(User user)
+        {
+            _context.Configuration.ValidateOnSaveEnabled = false;
+            _context.User.Attach(user);
+            _context.Entry(user).Property(x => x.Password).IsModified = true;
+            _context.SaveChanges();
         }
 
         public UserEditViewModel CreateUser()
@@ -115,8 +130,8 @@ namespace CMSSample.DA.Repository
 
         public UserDisplayViewModel GetUserByUserName(string UserName)
         {            
-            using (_context)
-            {
+            //using (_context)
+            //{
                 User usr = new User();
                 usr = _context.User.AsNoTracking()
                     .Include(x => x.DZ)
@@ -132,7 +147,7 @@ namespace CMSSample.DA.Repository
                 };
 
                 return usrdisp;
-            }            
+            //}            
         }
         
 
@@ -148,6 +163,15 @@ namespace CMSSample.DA.Repository
             usr = _context.User.Find(id);
             _context.User.Remove(usr);
             Save();
+        }
+
+        public void UpdateSoftDelete(User user)
+        {
+            _context.Configuration.ValidateOnSaveEnabled = false;
+            _context.User.Attach(user);            
+            _context.Entry(user).Property(x => x.DeletedAt).IsModified = true;
+            _context.Entry(user).Property(x => x.IsDeleted).IsModified = true;            
+            _context.SaveChanges();
         }
 
         public void UpdateUser(User user)

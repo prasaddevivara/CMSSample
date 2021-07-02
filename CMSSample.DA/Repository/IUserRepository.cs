@@ -16,6 +16,11 @@ namespace CMSSample.DA.Repository
 
         UserEditViewModel GetUserByID(int UserId);
         UserDisplayViewModel GetUserByUserName(string UserName);
+
+        void UpdateSoftDelete(User user);
+
+        void UpdatePassword(User user);
+
         void InsertUser(User user);
         void Delete(Object userID);
         void UpdateUser(User user);

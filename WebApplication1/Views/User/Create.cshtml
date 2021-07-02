@@ -22,6 +22,7 @@
                                 <center><h3> Rigster User </h3> </center>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col">
                                 <hr>
@@ -29,22 +30,34 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12" style="align-self:center">
                                 @Html.LabelFor(model => model.UserName, htmlAttributes: null)
-                                <div class="form-group">
+                                <div class="form-group vw-100">
                                     @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control-sm" } })
                                 </div>
 
                             </div>
+
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.Password, htmlAttributes: null)
                                 <div class="form-group">
                                     @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control-sm" } })
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: null)
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control-sm" } })
                                     <div></div>
                                 </div>
 
                             </div>
                         </div>
+
 
                         <div class="row">
                             <div class="col-md-6">

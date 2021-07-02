@@ -45,12 +45,19 @@ namespace CMSWebAPI
 
         public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
         {
-            var result = await context.Result.ExecuteAsync(cancellationToken);
-            if(result.StatusCode == HttpStatusCode.Unauthorized)
+            try
             {
-                result.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(scheme: "Basic", parameter: "realm=localhost"));
+                var result = await context.Result.ExecuteAsync(cancellationToken);
+                if (result.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    result.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(scheme: "Basic", parameter: "realm=localhost"));
+                }
+                context.Result = new ResponseMessageResult(result);
             }
-            context.Result = new ResponseMessageResult(result);
+            catch (Exception)
+            {
+                throw;
+            }
         }        
     }
 

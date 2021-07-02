@@ -12,11 +12,14 @@ namespace CMSSample.DomainModel.ViewModels
         [Required]
         public int TaskId { get; set; }
 
+        [Required]
+        [Display(Name = "Task Type")]
         public int TaskTypeId { get; set; }
          
         [Display(Name = "Task Type")]
         public IEnumerable<SelectListItem> TaskTypes { get; set; }
 
+        [Required]
         public string TaskDescription { get; set; }
 
         public int ODZCaseID { get; set; }

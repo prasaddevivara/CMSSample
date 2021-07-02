@@ -10,17 +10,16 @@ using System.Threading.Tasks;
 using NLog;
 using CMSSample.DomainModel.ViewModels;
 using System.Net.Http.Headers;
+using WebApplication1.Common;
 
 namespace WebApplication1.Controllers
 {
-   
+    [NoDirectAccess]
     public class UserController : Controller
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private static string WebAPIURL = "http://localhost/CMSWebAPI/api/";
-       
-
 
         [HttpGet]
         public ActionResult Index()
@@ -122,18 +121,27 @@ namespace WebApplication1.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        usereditviewmodel.Password = PwdEncrAndDecr.Encrypt(usereditviewmodel.Password);
                         CommonHttpProps(client);
                         var responseTask = client.PostAsJsonAsync<UserEditViewModel>("User", usereditviewmodel);
-                        responseTask.Wait();
+                        try
+                        {
+                            responseTask.Wait();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
 
                         var result = responseTask.Result;
                         if (result.IsSuccessStatusCode)
                         {
                             return RedirectToAction("Index", "User");
                         }
+
+                        ModelState.AddModelError(string.Empty, Convert.ToString(result.ReasonPhrase));
+                        logger.Error(DateTime.Now + ": " + Convert.ToString(result));
                     }
-                    ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
-                    logger.Error(DateTime.Now + ": Server error occured.Please contact admin for help!");
                 }                
 
                 if (TempData.ContainsKey("UserEditVM"))
@@ -204,17 +212,26 @@ namespace WebApplication1.Controllers
         {
             try
             {
+                UserDeleteViewModel userdeletevm = new UserDeleteViewModel()
+                {
+                    UserId = Id,
+                    DeletedAt = DateTime.Now,
+                    IsDeleted=true
+                };
+
                 using (var client = new HttpClient())
                 {
                     CommonHttpProps(client);
-                    var responseDel = client.DeleteAsync("User/" + Id + "/UserRemove");
-                    responseDel.Wait(30000);
+                    var responseTask = client.PutAsJsonAsync("User/" + Id + "/UserRemove", userdeletevm);
+                    responseTask.Wait();
 
-                    var result = responseDel.Result;
-
+                    var result = responseTask.Result;
                     if (result.IsSuccessStatusCode)
-                        return Json(new { status = "Success", message = "Deleted Succesfully!" });
+                    {
+                        return Json(new { status = "Success", message = "User Deleted Succesfully!" });
+                    }
                 }
+                ModelState.AddModelError(String.Empty, "Server error occured.  Please contact admin for help");
 
                 return RedirectToAction("Index", "User");
             }

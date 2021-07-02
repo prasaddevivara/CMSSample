@@ -19,7 +19,12 @@ namespace CMSSample.DomainModel.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        
+        [Required]
+        [DataType(DataType.Password)]
+        [System.ComponentModel.DataAnnotations.Compare("Password")]
+        public string ConfirmPassword { get; set; }
+
+
         [Display(Name = "User DZ")]
         public IEnumerable<SelectListItem> UserDZs{ get; set; }
 
@@ -34,6 +39,8 @@ namespace CMSSample.DomainModel.ViewModels
         public string Email { get; set; }
 
         public string Mobile { get; set; }
+
+        public DateTime CreationDate { get; set; }
 
         [Required]
         [Display(Name = "User Roles")]
